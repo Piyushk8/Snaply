@@ -1,4 +1,4 @@
-
+"use client"
 import Link from 'next/link'
 import React from 'react'
 import { UserAvatar } from '../User-Avatar'
@@ -25,7 +25,7 @@ const Post = ({post}:PostProps) => {
                 <Link href={`posts/${post.id}`} 
                     className='block text-xs  text-muted-foreground hover:underline-offset-8 '
                 >
-                    {formateRelativeDate(post.createdAt)}
+                    {/* {formateRelativeDate(post.createdAt)} */}
                 </Link>
             </div>
         </div>

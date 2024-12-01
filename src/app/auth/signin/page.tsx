@@ -7,9 +7,9 @@ import LoginForm from '@/components/auth/LoginForm'
 const SignInPage = () => {
   
   return (
-  <>
-    <LoginForm/>
-  </>
+    <main className="flex h-screen items-center justify-center p-5">
+        <LoginForm />
+    </main>
   )
 }
 

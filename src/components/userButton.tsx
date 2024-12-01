@@ -1,6 +1,6 @@
 "use client"
 
-import { auth } from "@/auth"
+import { auth, signOut } from "@/auth"
 import { getSession, useSession } from "next-auth/react"
 import { useState } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from "./ui/dropdown-menu"
@@ -10,6 +10,9 @@ import Link from "next/link"
 import { Check, Monitor, MoonIcon, Sun, UserIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
+import { useQueryClient } from "@tanstack/react-query"
+import Logout from "@/actions/logout"
+import { redirect } from "next/navigation"
 
 interface UserButtonProps {
     className?: string
@@ -18,7 +21,8 @@ interface UserButtonProps {
 export default function UserButton({className}:UserButtonProps){
     const { data: session, status} = useSession();
     const {setTheme,theme}=useTheme()
-    console.log(theme)
+    //if(!session?.user) redirect("/auth/signin")
+    const queryClient = useQueryClient();
 return <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <button className={cn("flex-none rounded-full",className)}>
@@ -62,7 +66,11 @@ return <DropdownMenu>
                         profile
                     </DropdownMenuItem>
                 </Link>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async()=>{
+                   queryClient.clear()
+                   await Logout()
+                }
+                }>
                     Sign Out
                 </DropdownMenuItem>
             </DropdownMenuContent>

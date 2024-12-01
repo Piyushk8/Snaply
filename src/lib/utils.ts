@@ -18,3 +18,11 @@ export const  formateRelativeDate=(from:Date)=>{
     }
   }
 }
+
+export function formatNumber(n:number):string{
+
+  return Intl.NumberFormat("en-In",{
+    notation:"compact",
+    maximumFractionDigits:1
+  }).format(n)
+}

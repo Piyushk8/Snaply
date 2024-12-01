@@ -6,6 +6,10 @@ import { useTransition } from "react";
 import { OauthLogin } from "@/actions/OauthLogin";
 import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
+
+
+
+
 export default  function  CompleteProfile() {
   const router = useRouter();
   const searchParams = useSearchParams()
