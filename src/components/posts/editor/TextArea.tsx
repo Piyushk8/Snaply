@@ -18,6 +18,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/hooks/use-toast"
 import { useTransition } from "react"
 import { SubmitPost } from "./action"
+import { useQueryClient,QueryFilters, InfiniteData } from "@tanstack/react-query"
+import { PostData, POstPage } from "@/lib/types"
 
 const FormSchema = z.object({
   content: z
@@ -32,7 +34,33 @@ const FormSchema = z.object({
 
 export function TextareaForm() {
   const [isPending,startTransition] = useTransition()
-    const form = useForm<z.infer<typeof FormSchema>>({
+  const queryClient = useQueryClient()
+  
+  
+  const refreshFeed=async(post:PostData)=>{
+    const queryFilter : QueryFilters = {queryKey: ['post-feed', 'for-you'],
+    }
+    await queryClient.cancelQueries(queryFilter)
+    queryClient.setQueriesData<InfiniteData<POstPage,string|null>>(queryFilter,
+      (oldData)=>{
+        const firstPage = oldData?.pages[0];
+        if(firstPage){
+          return{
+            pageParams:oldData.pageParams,
+            pages:[
+              {
+                posts:[post,...firstPage.posts],
+                nextCursor:firstPage.nextCursor
+              },
+              ...oldData.pages.slice(1)
+            ]
+          }
+        }
+      }
+    )
+  }
+  
+  const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   })
   const {formState:{errors},reset} = form
@@ -50,6 +78,7 @@ export function TextareaForm() {
             }
             if(data.success){
                 form.reset({content:""})
+                refreshFeed(data?.post)
                 toast({
                     style:({width:"fit-content",backgroundColor:"green"}),
                     title: "Posted Successfully!",
