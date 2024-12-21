@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
-import { postDataInclude } from "@/lib/types"
+import { getPostDataInclude } from "@/lib/types"
 import { createPostSchema } from "@/lib/zodSchema"
 import { error } from "console"
 
@@ -18,7 +18,7 @@ export async function SubmitPost(input:String) {
                 content,
                 userId:session.user.id
 
-            },include:postDataInclude
+            },include:getPostDataInclude(session.user?.id)
         })
        if(post) return {post,success:"Post Created Successfully"}
         return {error :"Error uploading post ,Try again Later"}

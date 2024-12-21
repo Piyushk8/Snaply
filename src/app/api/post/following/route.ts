@@ -18,13 +18,21 @@ export async function GET(req: NextRequest) {
 
     // Fetch posts with pagination
     const posts = await prisma.post.findMany({
-      orderBy: { createdAt: "desc" },
-      take: pageSize + 1, // Fetch one extra to determine next cursor
-      cursor: cursor ? { id: cursor } : undefined,
-      include: getPostDataInclude(session?.user?.id),
-    });
+        where:{
+            user:{
+                followers:{
+                    some:{
+                        followerId:session.user?.id
+                    }
+                }
+            }
+        },
+        orderBy:{createdAt:"desc"},
+        take:pageSize+1,
+        cursor:cursor?{id:cursor}:undefined,
+        include:getPostDataInclude(session?.user?.id)
+    })
 
-    console.log(posts)
     // Determine next cursor
     const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
 

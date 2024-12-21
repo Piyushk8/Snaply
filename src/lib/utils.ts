@@ -5,19 +5,28 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const  formateRelativeDate=(from:Date)=>{
+
+export const formateRelativeDate = (from: Date | string | number) => {
+  // Convert from to a Date object if it is not already one
+  const dateFrom = (from instanceof Date) ? from : new Date(from);
+
+  // Check if dateFrom is valid
+  if (isNaN(dateFrom.getTime())) {
+    throw new Error('Invalid date provided');
+  }
+
   const currentDate = new Date();
 
-  if(currentDate.getTime() - from.getTime() <24*60*60*1000){
-    return formatDistanceToNowStrict(from,{addSuffix:true})
-  }else{
-    if(currentDate.getFullYear() === from.getFullYear()){
-      return formatDate(from,"MMM d")
-    }else{
-      return formatDate(from ,"MMM d,yyy")
+  if (currentDate.getTime() - dateFrom.getTime() < 24 * 60 * 60 * 1000) {
+    return formatDistanceToNowStrict(dateFrom, { addSuffix: true });
+  } else {
+    if (currentDate.getFullYear() === dateFrom.getFullYear()) {
+      return formatDate(dateFrom, "MMM d");
+    } else {
+      return formatDate(dateFrom, "MMM d, yyyy");
     }
   }
-}
+};
 
 export function formatNumber(n:number):string{
 

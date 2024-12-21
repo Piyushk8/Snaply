@@ -27,23 +27,21 @@ const DeletePostDialog = ({
     <Dialog open={open} onOpenChange={handleOpenChange}> 
         <DialogContent>
            <DialogHeader>
-           <DialogTitle>
-                Delete Post
-            </DialogTitle>
-            <DialogDescription>
-                Are you sure you want to delete the Post?
-                This action cannot be undone.
-            </DialogDescription>
+                 <DialogTitle>
+                    Delete Post
+                </DialogTitle>
+                <DialogDescription>
+                    Are you sure you want to delete the Post?
+                    This action cannot be undone.
+                </DialogDescription>
            </DialogHeader>
            <DialogFooter>
-            <Button
-            
-            variant={"destructive"}
-            onClick={()=>mutation.mutate(post.id,{onSuccess:onClose})}
-            disabled={mutation.isPending}
-            >
-                Delete
-            </Button>
+                <Button variant={"destructive"} onClick={()=>mutation.mutate(post.id,{onSuccess:onClose})} 
+                    disabled={mutation.isPending}> 
+                    Delete
+                </Button>
+                
+                <Button variant={"outline"} disabled={mutation.isPending} onClick={onClose} >Cancel</Button>
            </DialogFooter>
         </DialogContent>
     </Dialog>

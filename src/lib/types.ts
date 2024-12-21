@@ -1,22 +1,56 @@
 import { Prisma } from "@prisma/client"
 
-export const userDataSelect = {
+export const getUserDataSelect =(loggedInUserId:string)=> {
+
+  return {
     id:true,
     username:true,
     name:true,
-    image:true
-    
+    bio:true,
+    createdAt:true, 
+    image:true,
+    followers:{
+      where:{
+          followerId:loggedInUserId
+      },
+      select:{
+          followerId:true
+      }
+  },_count:{
+      select:{
+        posts:true,
+          followers:true
+      }
+  }
   } satisfies Prisma.UserSelect
+}
+
+export type userData = Prisma.UserGetPayload<{
+  select:ReturnType<typeof getUserDataSelect>
+}>
+// export const userDataSelect = {
+//     id:true,
+//     username:true,
+//     name:true,
+//     image:true
+    
+//   } satisfies Prisma.UserSelect
   
-  
-  export const postDataInclude = {
-    user:{
-      select:userDataSelect
-    }
-  } satisfies Prisma.PostInclude
+export function getPostDataInclude(loggedInUserId:string){
+  return{user:{
+        select:getUserDataSelect(loggedInUserId)
+      }
+    } satisfies Prisma.PostInclude  
+  }
+
+  // export const postDataInclude = {
+  //   user:{
+  //     select:userDataSelect
+  //   }
+  // } satisfies Prisma.PostInclude
   
   export type PostData = Prisma.PostGetPayload<{
-    include: typeof postDataInclude
+    include: ReturnType <typeof getPostDataInclude>
   }>
 
 
@@ -24,3 +58,10 @@ export const userDataSelect = {
     posts:PostData[],
     nextCursor:string | null
   }
+
+  export interface FollowerInfo{
+    followers:number,
+    isFollowedByUser:boolean
+  }
+
+

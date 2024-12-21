@@ -10,8 +10,10 @@ import { Button } from '@/components/ui/button';
 import InfinityScrollContainer from '@/components/infinityScrollContainer';
 import PostLoadingSkelton, { PostsLoadingSkeleton } from '@/components/posts/PostLoadingSkelton';
 import DeletePostDialog from '@/components/posts/DeletePostDialog';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { FaSmileBeam } from 'react-icons/fa';
 
-const ForYourFeed = () => {
+const FollowingFeed = () => {
 //  const isFetchingNextPage= true
   const {
     data,
@@ -21,9 +23,9 @@ const ForYourFeed = () => {
     isFetchingNextPage,
     status   
   } = useInfiniteQuery({
-    queryKey: ['post-feed', 'for-you'],
+    queryKey: ['post-feed', 'following'],
     queryFn: async ({ pageParam = null }) => {
-      const { data } = await axios.get('/api/post/for-you', {
+      const { data } = await axios.get('/api/post/following', {
         params: { cursor: pageParam }, // Use `params` for query parameters
       });
       return data;
@@ -35,21 +37,23 @@ const ForYourFeed = () => {
   });
   
   const posts = data?.pages.flatMap(page => page.posts); // Flat map to combine all pages of posts
-  if(!posts) return (<>No posts Found</>)
-  if (status === "pending") {
-    return (
-      <PostsLoadingSkeleton/>
-    );
-  }
+  if(!posts||posts.length<1 && !isFetching) return (<div className='gap-3 text-center font-bold text-xl  flex justify-center items-center'>
+            No Posts. Start Following People! <FaSmileBeam className=''/>
+            </div>)
+console.log(posts)
+if (status === "pending") {
+  return (
+    <PostsLoadingSkeleton/>
+  );
+}
 
-  if (status === "error") {
-    return (
-      <p className="text-center text-destructive">
+if (status === "error") {
+  return (
+    <p className="text-center text-destructive">
         An error occurred while loading posts
       </p>
     );
   }
-
   return (
     <InfinityScrollContainer className={"space-y-3"} onBottomReached={()=>{
       hasNextPage&&!isFetching && fetchNextPage()}}>
@@ -61,9 +65,8 @@ const ForYourFeed = () => {
         isFetchingNextPage && <PostLoadingSkelton/>
       }
 
-     <DeletePostDialog open={true} onClose={()=>{}} post={posts[0]}/>
-    </InfinityScrollContainer>
+     </InfinityScrollContainer>
   );
 };
 
-export default ForYourFeed;
+export default FollowingFeed;
