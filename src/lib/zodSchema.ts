@@ -1,4 +1,4 @@
-import {object,string} from 'zod'
+import {array, object,string,z} from 'zod'
 
 
 export  const signInSchema = object({
@@ -14,4 +14,12 @@ export  const signInSchema = object({
 
 export const createPostSchema = object({
     content:string({required_error:"No content provided"})
+    mediaIds:array(string()).max()
 })
+
+export const updateUserProfileSchema = object({
+    name:string({required_error:"name required"}),
+    bio:string().max(1000,"Must be less than 1000 characters")
+})
+
+export type updateUserProfileValues = z.infer<typeof updateUserProfileSchema>

@@ -7,14 +7,18 @@ interface LinkifyProps{
 
 const Linkify = ({children}:LinkifyProps) => {
   return (
-    <LinkifyUrl>{children}</LinkifyUrl>    
+    <LinkifyUsername>
+        <LinkifyHashtag>
+         <LinkifyUrl>{children}</LinkifyUrl>  
+        </LinkifyHashtag>
+    </LinkifyUsername>      
 )
 }
 
 const LinkifyUrl = ({children}:LinkifyProps)=>{
 return (
-    <LinkItUrl>{children}</LinkItUrl>
-)
+    <LinkItUrl>{children}</LinkItUrl>   
+    )
 }
 
 const LinkifyUsername = ({children}:LinkifyProps)=>{
@@ -24,8 +28,8 @@ const LinkifyUsername = ({children}:LinkifyProps)=>{
                 const username = match.slice(1);
                 return (
                     <Link key={key}
-                        href={`/users/${username}`}
-                        className='text-primary hover:underline'
+                        href={`/user/${username}`}
+                        className='text-gray-600 hover:underline'
                         >
                         {match}
                     </Link>
@@ -41,7 +45,7 @@ function LinkifyHashtag({children}:LinkifyProps){
         <LinkIt regex={/(#[a-zA-Z0-9]+)/}
             component={(match,key)=>(
                 <Link key={key}
-                 className='text-primary hover:underline'
+                 className='text-gray-600 hover:underline'
                  href={`/hashtag/${match.slice(1)}`}>
                  
                     {match}
@@ -50,7 +54,7 @@ function LinkifyHashtag({children}:LinkifyProps){
 
             }
         >
-        
+            {children}
         </LinkIt>
     )
 }

@@ -12,6 +12,10 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import React, { cache } from 'react';
 import UsersPosts from './userPosts';
+import Linkify from '@/components/Linkify';
+import EditProfileButton from './EditProfileButton';
+import { CldImage } from 'next-cloudinary';
+import ClientCldImage from '@/components/CldImage';
 
 interface ProfilePageProps {
   params: { username: string };
@@ -82,7 +86,7 @@ function UserProfileSection({
   user,
   loggedInUserId,
 }: UserProfileSectionProps) {
-    console.log(user)
+   
   const followerInfo: FollowerInfo = {
     followers: user._count.followers,
     isFollowedByUser: user.followers.some(
@@ -92,11 +96,12 @@ function UserProfileSection({
 
   return (
     <div className="h-fit w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
-      <UserAvatar
+      {/* <UserAvatar
         image={user?.image}
         size={250}
         className="mx-auto  rounded-full"
-      />
+      /> */}
+        <ClientCldImage alt='fallback' src={user?.image} size={250} />
       {/* User info section */}
       <div className="flex flex-wrap gap-3 sm:flex-nowrap">
         <div className="me-auto space-y-3">
@@ -116,16 +121,18 @@ function UserProfileSection({
         {user.id !== loggedInUserId ? (
           <FollowButton userId={user.id} initialState={followerInfo} />
         ) : (
-          <Button>Edit Profile</Button>
+          <EditProfileButton user={user}/>
         )}
       </div>
 
       {user.bio && (
         <>
           <hr />
+          <Linkify>
           <div className="overflow-hidden whitespace-pre-line break-words">
             {user.bio}
           </div>
+          </Linkify>
         </>
       )}
      

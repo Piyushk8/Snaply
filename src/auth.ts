@@ -12,22 +12,40 @@ export const {
     session:{strategy:"jwt"},
     secret: process.env.NEXTAUTH_SECRET,
     callbacks:{
-        async session({ session, token }) {
+        async session({ session,trigger, token }) {
             // Fetch user data based on email or ID
             const user = await prisma.user.findUnique({
               where: { email: session.user.email },
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                username: true,
+                profileComplete: true,
+              }
             });
-           // console.log(user)
-            if (user) {
-              // Add custom fields to session.user
-              session.user.id = user.id; // Add user ID
-              session.user.profileComplete = user.profileComplete; // Add profileComplete field
-              session.user.isNewUser = token.isNewUser
-            }
+            
+            // 2. Merge all user data at once
+            session.user = {
+              ...session.user,  // Keep existing session data
+              ...user,          // Merge all database values
+              isNewUser: token.isNewUser
+            };
+            
+            // // 3. Handle token updates properly
+            // if (trigger === "update" && session?.user) {
+            //   console.log("trigerredddd")
+            //   return {
+            //     ...token,
+            //     ...session.user  // Merge all session data into token
+            //   };
+            // }
+           
            // console.log(session)
             return session; // Return updated session object
           },
-          async jwt({ account,token,user }) {
+          async jwt({ account,token,user ,session,trigger}) {
+           
             if (account && user?.email) {
                 // Check if the user is new during sign-in
                 const existingUser = await prisma.user.findUnique({

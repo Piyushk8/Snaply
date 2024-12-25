@@ -6,12 +6,14 @@ import { NextRequest } from "next/server";
 export const GET= async(req:NextRequest
     ,{params}:{params:{userId:string}}
 ) => {
+  
     const  {userId} = await params
     try {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
     const pageSize = 10;
 
     const session = await auth();
+  
     if (!session?.user) {
       return new Response(
         JSON.stringify({ error: "Unauthorized access" }),
@@ -28,7 +30,7 @@ export const GET= async(req:NextRequest
       include: getPostDataInclude(session?.user?.id),
     });
 
-    console.log(posts)
+    // console.log(posts)
     // Determine next cursor
     const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
 

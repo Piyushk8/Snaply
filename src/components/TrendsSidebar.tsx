@@ -10,6 +10,7 @@ import { unstable_cache } from 'next/cache'
 import { count } from 'console'
 import { formatNumber } from '@/lib/utils'
 import FollowButton from './FollowButton'
+import ClientCldImage from './CldImage'
 
 const TrendsSidebar = () => {
   return (
@@ -53,7 +54,8 @@ const WhoToFollow=async() => {
                     key={user.id}
                     className="flex items-center justify-between gap-3">
                         <Link href={`/users/${user.username}`} className='flex items-center gap-3'>
-                        <UserAvatar image={user.image} className='flex-none'/>
+                        {/* <UserAvatar image={user.image} className='flex-none'/> */}
+                        <ClientCldImage src={user?.image} classname='flex-none'/>
                         <div>
                             <p className='line-clamp-1 break-all font-semibold hover:text-gray-500'>{user.name}</p>
                             <p className='line-clamp-1 break-all text-muted-foreground '>@{user.username}</p>

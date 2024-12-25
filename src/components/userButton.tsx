@@ -13,27 +13,31 @@ import { useTheme } from "next-themes"
 import { useQueryClient } from "@tanstack/react-query"
 import Logout from "@/actions/logout"
 import { redirect } from "next/navigation"
+import ClientCldImage from "./CldImage"
+import { userData } from "@/lib/types"
 
 interface UserButtonProps {
     className?: string
+    user:userData
 }
 
-export default function UserButton({className}:UserButtonProps){
-    const { data: session, status} = useSession();
+export default function UserButton({user,className}:UserButtonProps){
+    // const { data: session, status} = useSession();
     const {setTheme,theme}=useTheme()
+    console.log("user button:",user)
     //if(!session?.user) redirect("/auth/signin")
     const queryClient = useQueryClient();
 return <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <button className={cn("flex-none rounded-full",className)}>
-                <UserAvatar image={session?.user?.image}
+                <ClientCldImage src={user?.image}
                     size={40}
                 />
             </button>
         </DropdownMenuTrigger>
                <DropdownMenuContent className="px-2 py-1 ">
                 <DropdownMenuLabel className="text-sm text-gray-500 ">
-                    Logged in as @{session?.user.name}
+                    Logged in as @{user.name}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator/>
 
@@ -60,7 +64,7 @@ return <DropdownMenu>
                     </DropdownMenuPortal>
                 </DropdownMenuSub>
 
-                <Link href={`/user/${session?.user?.name}`}>
+                <Link href={`/user/${user?.username}`}>
                     <DropdownMenuItem className="text-gray-500">
                         <UserIcon className="mr-2 size-4"/>
                         profile

@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
     const pageSize = 10;
 
     const session = await auth();
+    //console.log("user session check:",session?.user)
     if (!session?.user) {
       return new Response(
         JSON.stringify({ error: "Unauthorized access" }),
@@ -24,7 +25,7 @@ export async function GET(req: NextRequest) {
       include: getPostDataInclude(session?.user?.id),
     });
 
-    console.log(posts)
+    // console.log(posts)
     // Determine next cursor
     const nextCursor = posts.length > pageSize ? posts[pageSize].id : null;
 

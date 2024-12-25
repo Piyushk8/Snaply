@@ -14,7 +14,7 @@ size,
 className
 
 }:UserAvatarProps)=>{
-    return <Image src={Avatar}
+    return <Image src={image||Avatar}
     width={size??48}
     height={size ?? 48}
     alt="user avatar"
