@@ -18,8 +18,8 @@ const ClientCldImage: React.FC<ClientCldImageProps> = ({
 }) => {
   return (
     <CldImage
-      width={size}
-      height={size}
+      width={50}
+      height={50}
       className={cn("mx-auto rounded-full", classname)} // Combine default and custom classnames
       alt={alt}
       src={src || "Avatars/ggmswp9zqo3za87f9npu"} // Fallback Cloudinary avatar

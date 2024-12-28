@@ -45,7 +45,7 @@ const MenuBar =({className}:MenuBarProps) => {
                 title='bookmarks'
                 asChild
             >
-                <Link href={"/bookmarks"}>
+                <Link href={`/user/${session?.data?.user?.username}/bookmarks`}>
                 <Home />
                 <span className='hidden lg:inline'>Bookmarks</span>
                 </Link>

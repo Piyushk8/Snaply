@@ -27,10 +27,17 @@ export const POST = async (req: NextRequest) => {
     try {
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
-
+        const MAX_SIZE = 40 * 1024 * 1024; // 100MB
+        console.log("reached",file)
         if (!file) {
             return NextResponse.json({ error: "File not found" }, { status: 400 });
         }
+        if (file.size > MAX_SIZE) {
+            return NextResponse.json({ error: "File size exceeds the limit of 100MB" }, { status: 400 });
+        }
+
+        
+
 
         // Convert file to buffer
         const bytes = await file.arrayBuffer();
@@ -39,9 +46,30 @@ export const POST = async (req: NextRequest) => {
         // Generate a unique public ID based on the file name
         const fileName = file.name.split('.')[0];
         const publicId = `Attachments/${fileName}`;
+        let options: any = {
+            folder: "Attachments",
+            public_id: fileName,
+            unique_filename: true,
+        };
 
+        // Customize options based on file type
+        if (file.type.startsWith("video")) {
+            options = {
+                ...options,
+                transformation: [{ quality: "auto", fetch_format: "mp4" }],
+                resource_type: "video", // Handle as video
+            };
+        } else if (file.type.startsWith("image")) {
+            options = {
+                ...options,
+                resource_type: "image", // Handle as image
+            };
+        }
+
+        console.log(options)
         // Check and delete existing file if necessary
         try {
+
             const existingResource = await cloudinary.api.resource(publicId);
             if (existingResource) {
                 await cloudinary.uploader.destroy(publicId);
@@ -54,13 +82,7 @@ export const POST = async (req: NextRequest) => {
         // Upload new file
         const result = await new Promise<CloudinaryUploadResult>((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
-                {
-                    folder: "Attachments",
-                    public_id: fileName,
-                    unique_filename: true,
-                    resource_type: "auto", // Automatically detect file type
-                    // format: "auto" // Automatically optimize format
-                },
+               options,
                 (error, result) => {
                     if (error) reject(error);
                     else resolve(result as CloudinaryUploadResult);
@@ -81,4 +103,25 @@ export const POST = async (req: NextRequest) => {
             { status: 500 }
         );
     }
+}
+
+
+
+export const DELETE = async (req:NextRequest) => {
+    const searchParams= req.nextUrl.searchParams
+    const publicId = searchParams.get("Id")
+    console.log(publicId)
+    if(!publicId) return new Error("No Public Id found")
+    try {
+
+        const existingResource = await cloudinary.api.resource(publicId);
+        if (existingResource) {
+            const result =  await cloudinary.uploader.destroy(publicId);
+            console.log(`Deleted existing file: ${publicId}`);
+        }
+        return NextResponse.json({deleted:true,publicId})
+    } catch (error) {
+        console.log("Some error occured while deleting from cloudinary");
+    }
+
 }

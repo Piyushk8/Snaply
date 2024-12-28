@@ -1,3 +1,4 @@
+import { MediaType } from '@prisma/client'
 import {array, object,string,z} from 'zod'
 
 
@@ -13,8 +14,11 @@ export  const signInSchema = object({
 })
 
 export const createPostSchema = object({
-    content:string({required_error:"No content provided"})
-    mediaIds:array(string()).max()
+    content:string({required_error:"No content provided"}),
+    media:array(object({
+        publicId:string()
+        ,type:string()
+        })).max(5,"cannot have more than 5 attachments")
 })
 
 export const updateUserProfileSchema = object({

@@ -28,12 +28,14 @@ model User {
   verified  DateTime?
   accounts Account[]
   posts    Post[]
+  likes Like[]
+  bookmarks Bookmarks[]
+  comments Comments[]
   followers Follow[] @relation("Followers")
   following Follow[] @relation("Following")
   profileComplete Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
   @@map("users")
 }
 
@@ -69,11 +71,15 @@ model Post{
   id String @id @default(cuid())
   content String
   userId String
-
-  user User @relation(fields: [userId],references:[id],onDelete:Cascade)
   attachments Media[]
+  comments Comments[]
+  likes Like[]
+  bookmarks Bookmarks[]
   createdAt DateTime @default(now())
+  user User @relation(fields: [userId],references:[id],onDelete:Cascade)
+  
  @@map("posts")
+
 
 }
 
@@ -91,11 +97,42 @@ model Media{
   postId  String?
   post    Post? @relation(fields: [postId], references: [id],onDelete:SetNull)
   type    MediaType
-  url   String
-
+  publicId   String //publicId
   createdAt DateTime @default(now())
 }
   enum MediaType {
     IMAGE
     VIDEO
+  }
+
+  model Like{
+    userId String
+    user User @relation(fields: [userId],references: [id], onDelete:Cascade)
+    postId String
+    post Post @relation(fields: [postId],references: [id], onDelete:Cascade)
+    @@unique([userId,postId])
+    @@map("likes")
+  }
+
+  model Bookmarks{
+    id String @id @default(cuid())
+    userId String
+    user User @relation(fields: [userId],references: [id], onDelete:Cascade)
+    postId String
+    post Post @relation(fields: [postId],references: [id], onDelete:Cascade)
+    createdAt DateTime @default(now())
+    @@unique([userId,postId])
+    @@map("bookmarks")
+  }
+
+  model Comments{
+    id String @id @default(cuid())
+    content String
+    postId String 
+    post Post @relation(fields: [postId],references: [id],onDelete: Cascade)
+    userId String
+    user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+    createdAt DateTime @default(now()) 
+    @@map("comments")
+
   }

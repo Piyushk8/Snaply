@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client"
+import { boolean } from "zod"
 
 export const getUserDataSelect =(loggedInUserId:string)=> {
 
@@ -40,6 +41,23 @@ export function getPostDataInclude(loggedInUserId:string){
   return{user:{
         select:getUserDataSelect(loggedInUserId)
       }
+      ,attachments:true,
+      bookmarks:{
+        where:{
+          userId:loggedInUserId
+        },
+        select:{userId:true},
+      },
+      likes:{
+        where:{userId:loggedInUserId},
+        select:{userId:true}
+    }
+    ,_count:{
+        select:{
+            likes:true,
+            comments:true
+        }
+    },
     } satisfies Prisma.PostInclude  
   }
 
@@ -65,3 +83,29 @@ export function getPostDataInclude(loggedInUserId:string){
   }
 
 
+export interface LikeInfo {
+  likes:number,
+  isLikedByUser:boolean
+}
+
+
+export interface BookmarkInfo{
+  isBookMarkedByUser:boolean
+}
+
+export function getCommentDataInclude(loggedInUserId:string){
+    return {
+      user:{
+        select:getUserDataSelect(loggedInUserId)
+      }
+    } satisfies Prisma.CommentsInclude
+} 
+
+export type CommentData = Prisma.CommentsGetPayload<{
+  include:ReturnType<typeof getCommentDataInclude>
+}>
+
+export interface CommentdPage{
+  comments:CommentData[],
+  previousCursor:string | null
+}

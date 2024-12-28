@@ -73,6 +73,7 @@ export const fileRouter = {
       return { user };
     
     })
+    //@ts-ignore
     .onUploadComplete(async ({file}) => {
       const media = await prisma.media.create({
         data:{
@@ -83,6 +84,7 @@ export const fileRouter = {
           type:file.type.startsWith("image")?"IMAGE":"VIDEO"    
         }
       })
+      return {media}
     })
  
 } satisfies FileRouter;
