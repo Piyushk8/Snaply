@@ -6,6 +6,7 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import FollowingFeed from "./followingFeed";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import axios from "axios";
 
 
 export default async function  Home() {
@@ -13,17 +14,10 @@ export default async function  Home() {
   console.log("home",session)
   if(!session?.user?.profileComplete) redirect(`/profile?email=${encodeURIComponent(session?.user.email)}`)
    
-  
     return (
     <main className="gap-5 flex  w-full min-w-0 ">
       <div className="w-full mb-3 min-w-0 space-y-5 ">
         <PostEditor/>
-        {/* {
-          <div>
-            <Button>Following</Button>
-            <Button>For you</Button>
-          </div>
-        } */}
         <Tabs className="" defaultValue="for-you">
           <TabsList className=" w-full selection:bg-black bg-transparent">
             <TabsTrigger value="for-you">For you</TabsTrigger>

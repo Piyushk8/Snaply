@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client"
-import { boolean } from "zod"
+import { boolean, string } from "zod"
 
 export const getUserDataSelect =(loggedInUserId:string)=> {
 
@@ -19,6 +19,7 @@ export const getUserDataSelect =(loggedInUserId:string)=> {
       }
   },_count:{
       select:{
+        receivedNotifications:true,
         posts:true,
           followers:true
       }
@@ -105,7 +106,36 @@ export type CommentData = Prisma.CommentsGetPayload<{
   include:ReturnType<typeof getCommentDataInclude>
 }>
 
-export interface CommentdPage{
+export interface CommentPage{
   comments:CommentData[],
-  previousCursor:string | null
+  previousCursor?:string | null,
+  nextCursor?:string | null
+}
+
+
+export type notificationsData = Prisma.NotificationsGetPayload<{
+  include:ReturnType<typeof getNotificationDataInclude>
+}>
+export interface NotificationPage{
+  notifications:notificationsData[],
+  nextCursor:string|null
+}
+
+export function getNotificationDataInclude(loggedInUserId:string){
+
+  return {
+    post:{
+      select:{
+          id:true,
+      },
+  },
+  issuer:{
+      select:{
+          id:true,
+          name:true,
+          username:true,
+          image:true,
+      }
+  },
+  }satisfies Prisma.NotificationsInclude
 }

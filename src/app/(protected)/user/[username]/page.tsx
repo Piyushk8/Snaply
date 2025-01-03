@@ -96,11 +96,6 @@ function UserProfileSection({
 
   return (
     <div className="h-fit w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
-      {/* <UserAvatar
-        image={user?.image}
-        size={250}
-        className="mx-auto  rounded-full"
-      /> */}
         <ClientCldImage alt='fallback' src={user?.image} size={250} />
       {/* User info section */}
       <div className="flex flex-wrap gap-3 sm:flex-nowrap">

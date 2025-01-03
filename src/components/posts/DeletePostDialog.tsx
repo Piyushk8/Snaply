@@ -1,6 +1,6 @@
 import { PostData } from '@/lib/types'
 import React from 'react'
-import { useDeletePostMutation } from './mutations'
+import { useDeletePostMutation } from './del-PostMutations'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '../ui/dialog'
 import { Button } from '../ui/button'
 interface DeletePostDialogProps{

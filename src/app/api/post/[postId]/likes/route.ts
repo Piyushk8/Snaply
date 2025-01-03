@@ -64,7 +64,21 @@ export async function POST(
       );
     }
 
-    const like = await prisma.like.upsert({
+    const post = await prisma.post.findUnique({
+      where:{
+        id:postId
+      }
+      ,select:{userId:true}
+    })
+
+    if(!post)  return Response.json(
+      { error: "Post not found" },
+      { status: 404 }
+    );
+
+    //transaction for Like creation then check for self --> Notification
+    await prisma.$transaction([
+       prisma.like.upsert({
       where: {
         userId_postId: {
           userId: session.user.id,
@@ -76,11 +90,25 @@ export async function POST(
         postId: postId,
       },
       update: {},
-    });
+    }),
+    ...(post?.userId !== session?.user?.id ? [
+       prisma.notifications.create({
+        data:{
+          recipientId:post?.userId,
+          issuerId:session?.user?.id as string,
+          type:"LIKE",
+          postId:postId
+  
+        }
+      })
 
+
+    ]:[])
+
+    ])
+    
     return Response.json({ 
       message: "Like added successfully",
-      like: like 
     });
     
   } catch (err) {
@@ -97,17 +125,39 @@ export async  function DELETE(req:NextRequest ,
     const {postId} = await params 
     try {
         const session = await auth()
-        if(!session?.user) return Response.json({error:"Unauthorized user"},{status:404})
-            
-           const like = await prisma.like.delete({
-            where:{
-                userId_postId:{
-                    userId:session?.user?.id,
-                    postId:postId
-                }
-            },
+        if(!session?.user) return Response.json({error:"Unauthorized user"},{status:404}) 
 
-           })
+          const post = await prisma.post.findUnique({
+            where:{
+              id:postId
+            }
+            ,select:{userId:true}
+          })
+      
+          if(!post)  return Response.json(
+            { error: "Post not found" },
+            { status: 404 }
+          );
+        
+        await prisma.$transaction([
+          prisma.like.delete({
+           where:{
+               userId_postId:{
+                   userId:session?.user?.id,
+                   postId:postId
+               }},
+          }),
+
+          prisma.notifications.deleteMany({
+            where:{issuerId:session?.user?.id,
+              recipientId:post?.userId,
+              postId,
+              type:"LIKE"
+            }
+          })
+
+        ])
+          
 
          
 

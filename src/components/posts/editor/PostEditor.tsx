@@ -11,16 +11,6 @@ import { ImageIcon } from "lucide-react";
 
 export default function PostEditor() {
   const { data: session } = useSession();
-  //   const {
-  //     startUpload:handleStartUpload,
-  //     attachments,
-  //     isUploading,
-  //     uploadProgress,
-  //     removeAttachments,
-  //     reset
-  // } = useMediaUpload();
-
-  
     let Image = session?.user.image
    
   return (

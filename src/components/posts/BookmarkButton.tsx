@@ -55,7 +55,7 @@ const BookmarkButton = ({
 
     return (
     <div onClick={()=>mutate()} className='flex items-center gap-2'>
-        <Bookmark className={cn("size-5",data.isBookMarkedByUser && "fill-gray-500 text-gray-500")}/>
+        <Bookmark className={cn("size-5 text-gray-400",data.isBookMarkedByUser && "fill-gray-500 text-gray-500")}/>
     </div>
   )
 }

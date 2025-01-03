@@ -37,10 +37,14 @@ const FollowingFeed = () => {
   });
   
   const posts = data?.pages.flatMap(page => page.posts); // Flat map to combine all pages of posts
-  if(!posts||posts.length<1 && !isFetching) return (<div className='gap-3 text-center font-bold text-xl  flex justify-center items-center'>
-            No Posts. Start Following People! <FaSmileBeam className=''/>
-            </div>)
-console.log(posts)
+  if (status === "success" && !posts?.length && !hasNextPage) {
+    return (
+      <p className="text-center text-muted-foreground">
+        No posts found. Start following people to see their posts here.
+      </p>
+    );
+  }
+
 if (status === "pending") {
   return (
     <PostsLoadingSkeleton/>

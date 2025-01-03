@@ -12,6 +12,7 @@ import PostLoadingSkelton, { PostsLoadingSkeleton } from '@/components/posts/Pos
 import DeletePostDialog from '@/components/posts/DeletePostDialog';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { FaSmileBeam } from 'react-icons/fa';
+import Link from 'next/link';
 
 const ForYourFeed = () => {
 //  const isFetchingNextPage= true
@@ -28,6 +29,7 @@ const ForYourFeed = () => {
       const { data } = await axios.get('/api/post/for-you', {
         params: { cursor: pageParam }, // Use `params` for query parameters
       });
+     
       return data;
     },
     getNextPageParam: (lastPage) => {
@@ -38,7 +40,7 @@ const ForYourFeed = () => {
   });
   
   const posts = data?.pages.flatMap(page => page.posts); // Flat map to combine all pages of posts
-  if(!posts && !isFetching) return (<div className='gap-3 text-center font-bold text-xl  flex justify-center items-center'>
+  if(!posts && status==="success") return (<div className='gap-3 text-center font-bold text-xl  flex justify-center items-center'>
             No Posts Found <FaSmileBeam className=''/>
             </div>)
 
@@ -59,7 +61,7 @@ if (status === "error") {
     <InfinityScrollContainer className={"space-y-3"} onBottomReached={()=>{
       hasNextPage&&!isFetching && fetchNextPage()}}>
       {posts?.map((post: PostData) => (
-        <Post post={post} key={post.id} />
+        <Post post={post} key={post?.id} />
       ))}
 
       {

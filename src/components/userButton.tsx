@@ -25,6 +25,7 @@ export default function UserButton({user,className}:UserButtonProps){
     // const { data: session, status} = useSession();
     const {setTheme,theme}=useTheme()
     console.log("user button:",user)
+    if(!user) redirect("/auth/signin")
     //if(!session?.user) redirect("/auth/signin")
     const queryClient = useQueryClient();
 return <DropdownMenu>

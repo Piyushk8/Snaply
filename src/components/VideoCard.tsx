@@ -21,19 +21,28 @@ const  VideoCard: React.FC<VideoCardProps> = ({video, onDownload}) => {
     const [isHovered, setIsHovered] = useState(false)
     const [previewError, setPreviewError] = useState(false)
 
-    const getThumbnailUrl = useCallback((publicId: string) => {
-        return getCldImageUrl({
-            src: publicId,
-            width: 400,
-            height: 225,
-            crop: "fill",
-            gravity: "auto",
-            format: "jpg",
-            quality: "auto",
-            assetType: "video"
-        })
-    }, [])
-
+    const getPreviewVideoUrl = useCallback((publicId: string) => {
+      return getCldVideoUrl({
+          src: publicId,
+          width: 600, // Increased width
+          height: 338, // Adjusted height to maintain 16:9 aspect ratio
+          rawTransformations: ["e_preview:duration_15:max_seg_9:min_seg_dur_1"]
+      });
+  }, []);
+  
+  const getThumbnailUrl = useCallback((publicId: string) => {
+      return getCldImageUrl({
+          src: publicId,
+          width: 600, // Increased width
+          height: 338, // Adjusted height to match the preview size
+          crop: "fill",
+          gravity: "auto",
+          format: "jpg",
+          quality: "auto",
+          assetType: "video"
+      });
+  }, []);
+  
     const getFullVideoUrl = useCallback((publicId: string) => {
         return getCldVideoUrl({
             src: publicId,
@@ -43,15 +52,6 @@ const  VideoCard: React.FC<VideoCardProps> = ({video, onDownload}) => {
         })
     }, [])
 
-    const getPreviewVideoUrl = useCallback((publicId: string) => {
-        return getCldVideoUrl({
-            src: publicId,
-            width: 400,
-            height: 225,
-            rawTransformations: ["e_preview:duration_15:max_seg_9:min_seg_dur_1"]
-
-        })
-    }, [])
 
  
 
@@ -91,8 +91,9 @@ const  VideoCard: React.FC<VideoCardProps> = ({video, onDownload}) => {
                   muted
                   loop
                   controls
-                  className="w-full h-full object-cover"
+                  className="mx-auto size-fit max-h-[30rem] rounded-2xl"
                   onError={handlePreviewError}
+                  
                 />
               )
             ) : (

@@ -1,3 +1,4 @@
+"use client"
 import { PostData } from '@/lib/types'
 import React, { useState } from 'react'
 import { string } from 'zod'

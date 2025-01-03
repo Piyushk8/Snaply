@@ -31,6 +31,8 @@ model User {
   likes Like[]
   bookmarks Bookmarks[]
   comments Comments[]
+  receivedNotifications Notifications[] @relation("Recipient")
+  issuedNotifications   Notifications[] @relation("Issuer") 
   followers Follow[] @relation("Followers")
   following Follow[] @relation("Following")
   profileComplete Boolean  @default(false)
@@ -75,6 +77,7 @@ model Post{
   comments Comments[]
   likes Like[]
   bookmarks Bookmarks[]
+  notifications Notifications[]
   createdAt DateTime @default(now())
   user User @relation(fields: [userId],references:[id],onDelete:Cascade)
   
@@ -136,3 +139,22 @@ model Media{
     @@map("comments")
 
   }
+model Notifications {
+  id String @id @default(cuid())
+  recipientId String 
+  issuerId  String
+  recipient  User @relation(name: "Recipient", fields: [recipientId],references: [id],onDelete:Cascade)
+  issuer  User @relation(name: "Issuer", fields: [issuerId],references: [id],onDelete:Cascade)
+  postId String?
+  post Post? @relation(fields: [postId],references: [id],onDelete:Cascade)
+  type NotificationsType
+  read Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  @@map("notifications")
+}
+enum NotificationsType {
+  LIKE
+  FOLLOW
+  COMMENT
+}

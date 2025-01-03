@@ -55,9 +55,9 @@ const LikeButton = ({
     })
 
     return (
-    <div onClick={()=>mutate()} className='flex items-center gap-2'>
-        <Heart className={cn("size-5",data.isLikedByUser && "fill-red-500 text-red-500")}/>
-       {data.likes===0 ? "" : data.likes}
+    <div onClick={()=>mutate()} className='flex  items-center gap-[1px]'>
+        <Heart className={cn("size-5 text-gray-400",data.isLikedByUser && "fill-red-500 text-red-500")}/>
+       {data.likes}
     </div>
   )
 }
