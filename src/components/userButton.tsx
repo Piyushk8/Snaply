@@ -24,7 +24,7 @@ interface UserButtonProps {
 export default function UserButton({user,className}:UserButtonProps){
     // const { data: session, status} = useSession();
     const {setTheme,theme}=useTheme()
-    console.log("user button:",user?.image)
+    console.log(theme)
     if(!user) redirect("/auth/signin")
     //if(!session?.user) redirect("/auth/signin")
     const queryClient = useQueryClient();

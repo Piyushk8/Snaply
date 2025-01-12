@@ -1,9 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { boolean, z } from "zod";
-import Quill from "quill"
+import Placeholder from "@tiptap/extension-placeholder";
+import characterCount from "@tiptap/extension-character-count"
+import { EditorContent, useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -36,22 +39,16 @@ const FormSchema = z.object({
     .min(1, {
       message: "minimum 1 character required",
     })
-    .max(160, {
-      message: "Post must not be longer than 30 characters.",
+    .max(240, {
+      message: "Post must not be longer than 240 characters.",
     }),
 });
 
-type previewType = {
-  url: string;
-  file: File;
-  type: string;
-};
+
 
 export function TextareaForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
-
-  // const [preview, setPreview] = useState<previewType | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [errorMessage, seterrorMessage] = useState("")
   
@@ -153,6 +150,7 @@ export function TextareaForm() {
     resolver: zodResolver(FormSchema),
   });
   const {
+    control,
     formState: { errors },
     reset,
   } = form;
@@ -180,6 +178,7 @@ export function TextareaForm() {
         }
         if (data.success) {
           form.reset({ content: "" });
+          editor?.commands.setContent('')
           refreshFeed(data?.post);
           toast({
             style: { width: "fit-content", backgroundColor: "green" },
@@ -190,7 +189,48 @@ export function TextareaForm() {
     });
   }
 
+  const [wordCount, setWordCount] = useState(false)
+  const editor = useEditor({
+    extensions: [
+      characterCount.configure({
+        limit: 240,
+      }),
+      StarterKit.configure({
+        bold: false,
+        italic: false,
+      }),
+      Placeholder.configure({
+        placeholder: "What's on your mind ?",
+      }),
+    ],
+    onUpdate: ({ editor }) => {
+      // Update form when editor content changes
+      const content = editor.getText();
+      setWordCount(true)
+      form.setValue('content', content, { 
+        shouldValidate: true,
+        shouldDirty: true 
+      });
+    },
+    onFocus({editor}) {
+          setWordCount(true)
+    },
+    onBlur(){
+      setWordCount(false)
+      
+    }
+  });
+  // const getWordCount = useCallback(() => {
+  //   if (!editor) return 0;
+  //   const text = editor.getText();
+  //   const words = text.trim().split(/\s+/);
+  //   return words[0] === '' ? 0 : words.length;
+  // }, [editor]);
 
+  const getCharacterCount = useCallback(() => {
+    if (!editor) return 0;
+    return editor.getText().length;
+  }, [editor]);
 
   return (
     <Form {...form}>
@@ -199,11 +239,11 @@ export function TextareaForm() {
           control={form.control}
           name="content"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <FormControl>
                 <div
                   className={cn(
-                    "relative rounded-lg overflow-hidden w-full",
+                    "relative rounded-lg  w-full",
                     isDragging && "ring-2 ring-blue-500 bg-blue-50"
                   )}
                   onDragEnter={handleDragEnter}
@@ -211,19 +251,24 @@ export function TextareaForm() {
                   onDragOver={handleDragOver}
                   onDrop={handleDrag}
                 >
-                  <Textarea
-                    placeholder="What's happening?"
-                    className="border-zinc-100 sm:w-full scrollbar-none hover:scrollbar-thin resize-none overflow-auto rounded-lg bg-transparent max-h-40 w-full focus:ring-0"
-                    // style={{
-                    //   minHeight: "120px",
-                    // }}
-                    {...field}
+                    <Controller
+                    name="content"
+                    control={control}
+                    render={({ field }) => (
+                      <EditorContent
+                        editor={editor}
+                        className={cn(
+                         "min-h-[150px] w-full rounded-lg border border-input px-3 py-2",
+                         "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",  
+                        )}
+                        {...field}
+                      />
+                    )}
                   />
-
-                    {/* <div
-                    ref={quillRef}
-                    className="border-none rounded-lg bg-white min-h-[120px] w-full focus:ring-0"
-                  ></div> */}
+                   <div className="absolute bottom-2 right-2 text-xs text-gray-500 space-x-3">
+                          {/* <span>{getWordCount()} words</span> */}
+                          <span>{wordCount && getCharacterCount() + "/240 characters"}</span>
+                    </div>
 
                   {isDragging && (
                     <div className="absolute inset-0 flex items-center justify-center bg-blue-50/80">
@@ -253,9 +298,7 @@ export function TextareaForm() {
             </FormItem>
           )}
         />
-        {
-          errorMessage && <div className="text-destructive text-sm">{errorMessage}</div>
-        }
+        {form.formState.isSubmitted && <FormMessage>{errors.content?.message}</FormMessage>}
         {!!attachmentUploadInfo.length && (
           <AttachmentPreviews
             attachments={attachmentUploadInfo}

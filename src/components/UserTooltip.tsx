@@ -17,7 +17,6 @@ interface UserTooltipProps extends PropsWithChildren {
 export default function UserTooltip({
   children,  user
 }:UserTooltipProps) {
-    console.log(user)
     const {data:session} = useSession()
     const followerState:FollowerInfo={
         followers:user._count.followers,
