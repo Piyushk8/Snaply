@@ -15,14 +15,28 @@ export const submitComment =  async ({post,content}:submitCommentProps) => {
     const session = await auth()
 
     if(!session?.user) return null
-    const newComment = await prisma.comments.create({
-        data:{
-            postId:post?.id,
-            content:content,
-            userId:session?.user?.id
-        },
-        include:getCommentDataInclude(session?.user?.id)
-    })
+    const [newComment] = await prisma.$transaction([
+        prisma.comments.create({
+          data: {
+            content: content,
+            postId: post.id,
+            userId: session?.user.id,
+          },
+          include: getCommentDataInclude(session?.user.id),
+        }),
+        ...(post.user.id !== session?.user.id
+          ? [
+              prisma.notifications.create({
+                data: {
+                  issuerId: session?.user.id,
+                  recipientId: post.user.id,
+                  postId: post.id,
+                  type: "COMMENT",
+                },
+              }),
+            ]
+          : []),
+      ]);
 
 
     if(!newComment) return {error:"cannot post try gain later"}

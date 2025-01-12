@@ -1,6 +1,7 @@
 import Navbar from "@/components/navbar";
 import MenuBar from "@/components/MenuBar";
 import { Toaster } from "@/components/ui/toaster";
+import { Dot } from "lucide-react";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           className="sticky bg-card top-[5.35rem] h-fit hidden sm:block flex-none space-y-3 
           rounded-2xl px-3 py-5 lg:px-5 shadow-sm xl:w-80"
         />
-        <div className="flex-grow mb-7">{children}</div>
+        <div className="flex-grow mb-7">
+          {children}
+        </div>
       </div>
 
       {/* Divider */}

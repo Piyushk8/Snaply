@@ -88,9 +88,9 @@ model Post{
 
 model Follow {
  @@unique([followerId,followingId])
-  followerId String 
+  followerId String //the one that is following
   follower User @relation("Following", fields:[followerId] ,references:[id],onDelete:Cascade)
-  followingId String
+  followingId String //the one being followed
   following User @relation("Followers",fields:[followingId] ,references:[id],onDelete:Cascade)
   @@map("follows")
 }

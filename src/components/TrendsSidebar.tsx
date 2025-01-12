@@ -34,39 +34,40 @@ const WhoToFollow=async() => {
             NOT:{
                 id:session.user?.id
             },
-            following:
+            followers:
             {
                 none:{       
-                    followerId:session.user.id 
+                    followerId:session?.user?.id 
                 }
             }
         },
         select:getUserDataSelect(session.user.id),
         take:5
     })
-   // console.log("users to follow:",usersToFollow)
+    console.log("users to follow:",usersToFollow)
     return (
         <div className='space-y-5 rounded-2xl bg-card p-5 shadow-sm'>
         <div className="text-xl font-bold"> Who To Follow</div>
         {
-            usersToFollow.map((user)=>(
-                <div 
+            usersToFollow.map((user)=>{
+              
+                return ( <div 
                     key={user.id}
                     className="flex items-center justify-between gap-3">
-                        <Link href={`/users/${user.username}`} className='flex items-center gap-3'>
+                        <Link href={`/user/${user?.username}`} className='flex items-center gap-3'>
                         {/* <UserAvatar image={user.image} className='flex-none'/> */}
                         <ClientCldImage src={user?.image} classname='flex-none'/>
                         <div>
-                            <p className='line-clamp-1 break-all font-semibold hover:text-gray-500'>{user.name}</p>
-                            <p className='line-clamp-1 break-all text-muted-foreground '>@{user.username}</p>
+                            <p className='line-clamp-1 break-all font-semibold hover:text-gray-500'>{user?.name}</p>
+                            <p className='line-clamp-1 break-all text-muted-foreground '>@{user?.username}</p>
                         </div>
                         </Link>
                         <FollowButton userId={user.id} initialState={{
                             followers:user._count.followers
                             ,isFollowedByUser:user.followers.some((u)=>u.followerId === session.user.id)
                         }}></FollowButton>
-                         </div>
-            ))
+                         </div>)
+            })
         }
     </div>)
     

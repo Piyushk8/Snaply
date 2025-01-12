@@ -24,7 +24,7 @@ export default function CropImageDialog({
   onClose,
 }: CropImageDialogProps) {
   const cropperRef = useRef<ReactCropperElement>(null);
-
+  
   function crop() {
     const cropper = cropperRef.current?.cropper;
     if (!cropper) return;
@@ -45,7 +45,7 @@ export default function CropImageDialog({
           zoomable={false}
           ref={cropperRef}
           className="mx-auto size-fit"
-        />
+          />
         <DialogFooter>
           <Button variant="secondary" onClick={onClose}>
             Cancel
@@ -55,4 +55,38 @@ export default function CropImageDialog({
       </DialogContent>
     </Dialog>
   );
+}
+
+interface ImageCropperProps {
+  src: string;
+  cropAspectRatio: number;
+  onCropped: (blob: Blob | null) => void;
+  onClose:()=>void
+}
+export const ImageCropper = ({src,cropAspectRatio,onCropped}:ImageCropperProps)=>{
+   
+  const cropperRef = useRef<ReactCropperElement>(null);
+  function crop() {
+    const cropper = cropperRef.current?.cropper;
+    if (!cropper) return;
+    cropper.getCroppedCanvas().toBlob((blob) => onCropped(blob), "image/webp");
+    // onClose();
+  }
+  
+  return (
+  <div>
+  <Cropper
+     src={src}
+     aspectRatio={cropAspectRatio}
+     guides={false}
+     zoomable={false}
+     ref={cropperRef}
+     className="mx-auto size-fit"
+   />
+   <Button onClick={crop}>
+    Crop
+   </Button>
+   
+</div> 
+ )
 }

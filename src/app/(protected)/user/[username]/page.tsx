@@ -36,7 +36,7 @@ const getUser = cache(async (username: string, loggedInUser: string) => {
     },
     select: getUserDataSelect(loggedInUser),
   });
-
+  console.log("here",user)
   if (!user) notFound();
   return user;
 });
@@ -65,7 +65,6 @@ async function ProfilePage({ params }: ProfilePageProps) {
   }
 
   const user = await getUser(username, session.user.id);
-
   return (
     <main className="flex w-full min-w-0 gap-5">
       <div className="w-full min-w-0 space-y-5">
@@ -86,17 +85,18 @@ function UserProfileSection({
   user,
   loggedInUserId,
 }: UserProfileSectionProps) {
-   
+  
   const followerInfo: FollowerInfo = {
     followers: user._count.followers,
     isFollowedByUser: user.followers.some(
-      ({ followerId }) => followerId === loggedInUserId
+      ({followerId}) => followerId === loggedInUserId
     ),
   };
-
+  
+  console.log("here",user)
   return (
     <div className="h-fit w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
-        <ClientCldImage alt='fallback' src={user?.image} size={250} />
+        <ClientCldImage alt='fallback' src={user?.image} size={250} height={250} width={250} />
       {/* User info section */}
       <div className="flex flex-wrap gap-3 sm:flex-nowrap">
         <div className="me-auto space-y-3">

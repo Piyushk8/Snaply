@@ -15,7 +15,6 @@ export const GET= async(req:NextRequest
 ) => {
     const  {userId} = await params
     try {
-        console.log(userId)
         const session= await auth()
         const userSession = session as Session &{user:{id:string}}
         if(!userSession?.user) return Response.json({
@@ -39,14 +38,13 @@ export const GET= async(req:NextRequest
                 }
             }
         })
-        console.log(user)
         if(!user) return Response.json({error:"User not found"},{status:404})
 
         const data:FollowerInfo = {
             followers:user._count.followers,
             isFollowedByUser:!!user.followers.length
         }
-        return 
+        return data
 
         
         // const user = await prisma.follow.findUnique({
@@ -72,27 +70,38 @@ export async function POST(req:Request,
 ) {
     try {
         const {userId} = await params
-        console.log(userId)
+       
         const session= await auth()
         const userSession = session as Session &{user:{id:string}}
         if(!userSession?.user) return Response.json({
             error:"Unauthorized user"
         },{status:401})
 
-        const result = await prisma.follow.upsert({
-            where:{
-               followerId_followingId:{
-                followerId:userSession.user.id,
-                followingId:userId
-               }
-            },
-            create:{
-                followerId:userSession.user.id,
-                followingId:userId
-            },
-            update:{}
-        }) 
-        console.log(result)
+        const result = await prisma.$transaction([
+             prisma.follow.upsert({
+                where:{
+                   followerId_followingId:{
+                    followerId:userSession.user.id,
+                    followingId:userId
+                   }
+                },
+                create:{
+                    followerId:userSession.user.id,
+                    followingId:userId
+                },
+                update:{}
+            }),
+            
+            prisma.notifications.create({
+                data:{
+                    type:"FOLLOW",
+                    issuerId:userSession?.user?.id,
+                    recipientId:userId
+                }
+            })
+        ])
+       
+        
       return new Response()
     } catch (error) {
         console.error(error)
@@ -113,12 +122,21 @@ export async function DELETE(req:Request,
             error:"Unauthorized user"
         },{status:401})
 
-        await prisma.follow.deleteMany({
+      const result = await prisma.$transaction([
+         prisma.follow.deleteMany({
             where:{
                 followerId:userSession.user.id,
                 followingId:userId
             }
+        }),
+        prisma.notifications.deleteMany({
+            where:{
+                type:"FOLLOW",
+                issuerId:userSession?.user?.id,
+                recipientId:userId
+            }
         })
+      ])
 
       return new Response()
     } catch (error) {

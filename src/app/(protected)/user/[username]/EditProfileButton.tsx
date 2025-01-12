@@ -54,6 +54,7 @@ import { useForm } from "react-hook-form";
 import Resizer from "react-image-file-resizer";
 import { updateUserProfileSchema, updateUserProfileValues } from "@/lib/zodSchema";
 import { useUpdateProfileMutation } from "./useMutation";
+import ClientCldImage from "@/components/CldImage";
 
 
 interface EditProfileDialogProps {
@@ -100,7 +101,7 @@ interface EditProfileDialogProps {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className=" flex flex-col items-center gap-3">
         <DialogHeader>
           <DialogTitle>Edit profile</DialogTitle>
         </DialogHeader>
@@ -110,19 +111,19 @@ interface EditProfileDialogProps {
             src={
               croppedAvatar
                 ? URL.createObjectURL(croppedAvatar)
-                : user.image || AvatarPlaceholder
+                : user?.image || AvatarPlaceholder
             }
             onImageCropped={setCroppedAvatar}
           />
         </div>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <Form {...form} >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 w-full">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Display name</FormLabel>
+                  <FormLabel className="font-bold text-lg">Display name</FormLabel>
                   <FormControl>
                     <Input placeholder="Your display name" {...field} />
                   </FormControl>
@@ -135,7 +136,7 @@ interface EditProfileDialogProps {
               name="bio"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bio</FormLabel>
+                  <FormLabel className="font-bold text-lg">Bio</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tell us a little bit about yourself"
@@ -205,6 +206,7 @@ function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
           height={150}
           className="size-32 flex-none rounded-full object-cover"
         /> */}
+        <ClientCldImage src={src as string} alt="" width={150} height={150}/>
         <span className="absolute inset-0 m-auto flex size-12 items-center justify-center rounded-full bg-black bg-opacity-30 text-white transition-colors duration-200 group-hover:bg-opacity-25">
           <Camera size={24} />
         </span>

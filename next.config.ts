@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
-
 import { NextConfig } from "next";
 
-const nextConfig:NextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
     staleTimes: {
       dynamic: 30,
@@ -19,7 +18,14 @@ const nextConfig:NextConfig = {
       },
     ],
   },
- 
+  rewrites: async () => {
+    return [
+      {
+        source: "/hashtag/:tag",
+        destination: "/search?q=:tag"  // Fixed typo in "destination"
+      }
+    ]
+  }
 };
 
 export default nextConfig;

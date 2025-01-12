@@ -21,7 +21,8 @@ import {Swiper, SwiperSlide, useSwiper} from "swiper/react"
 import  {Keyboard, Navigation, Pagination} from "swiper/modules"
 import 'swiper/css';
 import 'swiper/css/pagination';
-
+import { useRouter } from 'next/navigation'
+import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 
 
 interface PostProps{
@@ -30,75 +31,111 @@ interface PostProps{
 
 
 const Post = ({post}:PostProps) => {
-    
+
+    const router = useRouter()
     const {data:session} = useSession()      
       return (
-    <article className='group/post space-y-3 bg-card rounded-2xl p-5 shadow-sm'>
-{/* Upper Icons div */}
-              <div className='flex  justify-between gap-3'>
-                  <div className='flex flex-wrap gap-3 '>
-                      <UserTooltip user={post.user}>
-                      <Link href={"/"} className=''>
-                          
-                          {/* <UserAvatar image={post.user?.image}/> */}
-                        <ClientCldImage src={post?.user?.image} alt='' size={45} classname={""}/>
-                      </Link>
-                      </UserTooltip>
-                      <div>
-                          <UserTooltip user={post.user}>   
-                          <Link href={`/user/${post.user?.username}`}
-                              className='block font-medium hover:text-gray-700'
-                              >
-                          {post.user?.name}
-                          </Link>
-                          </UserTooltip>
-                          <Link href={`/post/${post?.id}`} 
-                              className='block text-xs  text-muted-foreground hover:underline-offset-8 '
-                              >
-                              {formateRelativeDate(post.createdAt)}
-                          </Link>
-                      </div>
-                 
-                  </div>
-                  {
-                      post.user?.id === session?.user?.id && (
-                        <PostMoreButton post={post} className='opacity-0 transition-opacity group-hover/post:opacity-100' />
-                      )
-                  }
-              </div>
-          {/* content div     */}
-              <Linkify>
-                  <div className="ml-16 whitespace-pre-line break-words">
-                      {post.content}
-                      
-                      {
-                        post?.attachments.length > 0 && (<div>
-                            <MediaPreviews attachments={post.attachments}/>
-                        </div>) 
-                      }
-                  </div>
-              </Linkify>
-
-              <div className='flex justify-around text-sm  text-gray-600 '>
-                  <div className='flex items-center hover:bg-slate-100 rounded-full p-1'>
-                      <LikeButton postId={post.id} initialState={{
-                          likes:post?._count?.likes,
-                          isLikedByUser:post?.likes.some((l)=>l.userId === session?.user?.id)
-                      }}/>
-                  </div>
-                  <div  className='flex items-center gap-[1px] hover:bg-slate-100 rounded-full p-1'>
-                      <CommentButton post={post} user={session?.user}/>
-                  </div>
-                  <div className='flex items-center hover:bg-slate-100 rounded-full p-1'>
-                    <BookmarkButton  initialState={{isBookMarkedByUser:post.bookmarks.some((i)=>i.userId===session?.user?.id)}} postId={post.id}/>
-                        </div>
-                  <div className='flex items-center hover:bg-slate-100 rounded-full p-1'>
-                      <Share2 size={20} color='lightgray' />
-                  </div>
-              </div>
-            
-            {/* <VideoCard video={video} onDownload={handleDownload}/> */}   
-    </article>
+        <article
+        className="group/post space-y-3 bg-card rounded-2xl p-5 shadow-sm hover:bg-slate-50 relative"
+        onClick={() => router.push(`/post/${post?.id}`)} // Fallback navigation for empty spaces
+      >
+        {/* Overlay link to navigate to the post page */}
+        <Link
+          href={`/post/${post?.id}`}
+          className=""
+          aria-hidden="true"
+        ></Link>
+      
+        {/* Upper Icons div */}
+        <div
+          className="flex justify-between gap-3 "
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="w-full flex flex-wrap gap-3 ">
+            <UserTooltip user={post?.user}>
+              <Link href={`/user/${post?.user?.username}`} className="">
+                <ClientCldImage
+                  src={post?.user?.image || "/Avatars/ggmswp9zqo3za87f9npu"}
+                  alt=""
+                  size={45}
+                  classname=""
+                />
+              </Link>
+            </UserTooltip>
+            <div>
+              <UserTooltip user={post?.user}>
+                <Link
+                  href={`/user/${post?.user?.username}`}
+                  className="block font-medium hover:text-gray-700"
+                >
+                  {post.user?.name}
+                </Link>
+              </UserTooltip>
+              <Link
+                href={`/post/${post?.id}`}
+                className="block text-xs text-muted-foreground hover:underline-offset-8"
+              >
+                {formateRelativeDate(post?.createdAt)}
+              </Link>
+            </div>
+          </div>
+          {post?.user?.id === session?.user?.id && (
+           <div onClick={(e) => e.stopPropagation()}>
+               <PostMoreButton
+                  post={post}
+                  className="opacity-0 transition-opacity group-hover/post:opacity-100"
+                  />
+           </div>
+          )}
+        </div>
+      
+        {/* Content div */}
+        <Linkify>
+          <div className="ml-16 whitespace-pre-line break-words ">
+            {post.content}
+            <div>
+              {post?.attachments.length > 0 && (
+                <MediaPreviews attachments={post.attachments} />
+              )}
+            </div>
+          </div>
+        </Linkify>
+      
+        {/* Action buttons */}
+        <div
+          className="flex justify-around text-sm text-gray-600 "
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex items-center hover:bg-slate-100 rounded-full p-1">
+            <LikeButton
+              postId={post.id}
+              initialState={{
+                likes: post?._count?.likes,
+                isLikedByUser: post?.likes.some(
+                  (l) => l.userId === session?.user?.id
+                ),
+              }}
+            />
+          </div>
+          <div className="flex items-center gap-[1px] hover:bg-slate-100 rounded-full p-1">
+            <CommentButton post={post} user={session?.user} />
+          </div>
+          <div className="flex items-center hover:bg-slate-100 rounded-full p-1">
+            <BookmarkButton
+              initialState={{
+                isBookMarkedByUser: post.bookmarks.some(
+                  (i) => i.userId === session?.user?.id
+                ),
+              }}
+              postId={post.id}
+            />
+          </div>
+          <div className="flex items-center hover:bg-slate-100 rounded-full p-1">
+            <Share2 size={20} color="lightgray" />
+          </div>
+        </div>
+      </article>
+      
     
   )
 }
@@ -110,7 +147,7 @@ interface MediaPreviewsProps {
 
 function MediaPreviews({attachments}:MediaPreviewsProps) {
    return(
-    <div className={cn("w-full flex shadow-md bg-gray-300 rounded-lg p-2 flex-col items-center gap-3" ,attachments.length>1 && "sm:grid sm:grid-cols-2")}>
+    <div onClick={(e)=>e.stopPropagation()} className={cn("w-full flex shadow-md bg-gray-300 rounded-lg p-2 flex-col items-center gap-3" ,attachments.length>1 && "sm:grid sm:grid-cols-2")}>
 {/* <div className='w-full flex flex-col items-center gap-3'>  */}
     {
         attachments.map((m)=>(
@@ -128,9 +165,34 @@ interface MediaPreviewProps{
 }
 
 function MediaPreview({media}:MediaPreviewProps) {
+    const [isOpen, setisOpen] = useState(false)
+    const closeModal=()=>{
+      setisOpen(false)
+    }
     if(media.type === "IMAGE"){
     return (
-       <CldImage src={media.publicId} alt='' height={500} width={500}  className="mx-auto size-fit max-h-[30rem] rounded-2xl"/>
+        <>
+         <CldImage src={media.publicId} alt='' onClick={()=>setisOpen(true)} height={600} width={500} crop={"fill"}         
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="rounded-lg"/>
+             {isOpen && (
+                <Dialog open={isOpen} onOpenChange={closeModal}> 
+                <DialogContent className="h-[95%] max-h-[95vh] max-w-[90%]  overflow-auto flex flex-col flex-1">
+                    <DialogTitle></DialogTitle>
+                    <div className="flex justify-center items-center bg-black bg-opacity-80 p-2 rounded-lg overflow-auto">
+                    <CldImage
+                        src={media?.publicId || '/fallback-image.jpg'} // Replace with a valid fallback image
+                        alt="Preview"
+                        height={700}
+                        width={500}
+                        crop={"fill"}
+                        // fill // Makes the image take available space while maintaining aspect ratio
+                        className="object-contain rounded-lg h-fit"
+                    />
+                    </div>
+                </DialogContent>
+                </Dialog>)}
+        </>
 
     )}
     if(media.type === "VIDEO") {
@@ -165,7 +227,8 @@ function MediaPreview({media}:MediaPreviewProps) {
         className="mySwiper"
       >
     {
-        mediaItems.map((media,index)=>{
+        mediaItems.map((media,index)=>
+            {
             if(media?.type === "IMAGE") return (<SwiperSlide key={index}> <CldImage
                 alt={''}
                 width={200}
@@ -179,7 +242,8 @@ function MediaPreview({media}:MediaPreviewProps) {
                 </SwiperSlide>
                 )
             }
-            })
+            }
+        )
     }
     <button onClick={()=>swiper.slideNext()}>
         <ArrowRight/>

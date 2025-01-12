@@ -24,7 +24,7 @@ interface UserButtonProps {
 export default function UserButton({user,className}:UserButtonProps){
     // const { data: session, status} = useSession();
     const {setTheme,theme}=useTheme()
-    console.log("user button:",user)
+    console.log("user button:",user?.image)
     if(!user) redirect("/auth/signin")
     //if(!session?.user) redirect("/auth/signin")
     const queryClient = useQueryClient();
@@ -32,7 +32,6 @@ return <DropdownMenu>
         <DropdownMenuTrigger asChild>
             <button className={cn("flex-none rounded-full",className)}>
                 <ClientCldImage src={user?.image}
-                    size={40}
                 />
             </button>
         </DropdownMenuTrigger>

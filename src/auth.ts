@@ -18,6 +18,7 @@ export const {
               where: { email: session.user.email },
               select: {
                 id: true,
+                image:true,
                 name: true,
                 email: true,
                 username: true,

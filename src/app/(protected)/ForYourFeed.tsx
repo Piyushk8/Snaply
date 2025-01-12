@@ -3,7 +3,7 @@
 import Post from '@/components/posts/Post';
 import { PostData } from '@/lib/types';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { Loader2 } from 'lucide-react';
+import { Dot, Loader2 } from 'lucide-react';
 import React from 'react';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,9 @@ if (status === "error") {
       {
         isFetchingNextPage && <PostLoadingSkelton/>
       }
-
+      <div className="flex justify-center w-full"> 
+          <Dot fill={"lightgray"} />
+      </div>  
      </InfinityScrollContainer>
   );
 };
