@@ -60,7 +60,7 @@ const MenuBar = async({className}:MenuBarProps) => {
                 <span className='hidden md:inline'>Bookmarks</span>
                 </Link>
             </Button>
-        <Button variant={"ghost"}
+            <Button variant={"ghost"}
                 className='flex items-center justify-start gap-3'
                 title='Messages'
                 asChild
@@ -68,6 +68,16 @@ const MenuBar = async({className}:MenuBarProps) => {
                 <Link href={"/messages"}>
                 <Home />
                 <span className='hidden md:inline'>Messages</span>
+                </Link>
+            </Button>
+            <Button variant={"ghost"}
+                className='flex items-center justify-start gap-3'
+                title='Search'
+                asChild
+            >
+                <Link href={"/search"}>
+                <Home />
+                <span className='hidden md:inline'>Search</span>
                 </Link>
             </Button>
         </div>

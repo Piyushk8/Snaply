@@ -11,6 +11,7 @@ import { count } from 'console'
 import { formatNumber } from '@/lib/utils'
 import FollowButton from './FollowButton'
 import ClientCldImage from './CldImage'
+import SearchField from './searchField'
 
 const TrendsSidebar = () => {
   return (
@@ -44,31 +45,34 @@ const WhoToFollow=async() => {
         select:getUserDataSelect(session.user.id),
         take:5
     })
-    console.log("users to follow:",usersToFollow)
+    // console.log("users to follow:",usersToFollow)
     return (
-        <div className='space-y-5 rounded-2xl bg-card p-5 shadow-sm'>
-        <div className="text-xl font-bold"> Who To Follow</div>
-        {
-            usersToFollow.map((user)=>{
-              
-                return ( <div 
-                    key={user.id}
-                    className="flex items-center justify-between gap-3">
-                        <Link href={`/user/${user?.username}`} className='flex items-center gap-3'>
-                        {/* <UserAvatar image={user.image} className='flex-none'/> */}
-                        <ClientCldImage src={user?.image} classname='flex-none'/>
-                        <div>
-                            <p className='line-clamp-1 break-all font-semibold hover:text-gray-500'>{user?.name}</p>
-                            <p className='line-clamp-1 break-all text-muted-foreground '>@{user?.username}</p>
-                        </div>
-                        </Link>
-                        <FollowButton userId={user.id} initialState={{
-                            followers:user._count.followers
-                            ,isFollowedByUser:user.followers.some((u)=>u.followerId === session.user.id)
-                        }}></FollowButton>
-                         </div>)
-            })
-        }
+    <div className='space-y-5 rounded-2xl bg-card p-5 shadow-sm'>
+        <div className='z-30 bg-card w-full relative'>
+          <SearchField/>
+        </div>
+            <div className="text-xl font-bold"> Who To Follow</div>
+            {
+                usersToFollow.map((user)=>{
+                
+                    return ( <div 
+                        key={user.id}
+                        className="flex items-center justify-between gap-3">
+                            <Link href={`/user/${user?.username}`} className='flex items-center gap-3'>
+                            {/* <UserAvatar image={user.image} className='flex-none'/> */}
+                            <ClientCldImage src={user?.image} classname='flex-none'/>
+                            <div>
+                                <p className='line-clamp-1 break-all font-semibold hover:text-gray-500'>{user?.name}</p>
+                                <p className='line-clamp-1 break-all text-muted-foreground '>@{user?.username}</p>
+                            </div>
+                            </Link>
+                            <FollowButton userId={user.id} initialState={{
+                                followers:user._count.followers
+                                ,isFollowedByUser:user.followers.some((u)=>u.followerId === session.user.id)
+                            }}></FollowButton>
+                            </div>)
+                })
+            }
     </div>)
     
 }

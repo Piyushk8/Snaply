@@ -10,7 +10,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <Navbar />
 
       {/* Main Content Area */}
-      <div className="mx-auto max-w-7xl p-5 flex w-full grow gap-5">
+      <div className="max-w-7xl p-1.5 sm:p-4 md:p-5 flex w-full grow gap-5">
         {/* Sidebar MenuBar for Large Screens */}
         <MenuBar
           className="sticky bg-card top-[5.35rem] h-fit hidden sm:block flex-none space-y-3 

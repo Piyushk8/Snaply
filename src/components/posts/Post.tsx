@@ -1,28 +1,19 @@
 "use client"
 
 import Link from 'next/link'
-import { PostData, userData } from '@/lib/types'
+import { PostData } from '@/lib/types'
 import { cn, formateRelativeDate } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import PostMoreButton from './PostMoreButton'
 import Linkify from '../Linkify'
 import UserTooltip from '../UserTooltip'
-import { CldImage, CldOgImage } from 'next-cloudinary'
 import ClientCldImage from '../CldImage'
-import { Media } from '@prisma/client'
-import VideoCard from '../VideoCard'
-import {  ArrowRight, Share2 } from 'lucide-react'
 import LikeButton from './LikeButton'
 import BookmarkButton from './BookmarkButton'
-import { useState } from 'react'
-import { Carousel } from '../ui/carousel'
 import { CommentButton } from '../comments/CommentButton'
-import {Swiper, SwiperSlide, useSwiper} from "swiper/react"
-import  {Keyboard, Navigation, Pagination} from "swiper/modules"
-import 'swiper/css';
-import 'swiper/css/pagination';
 import { useRouter } from 'next/navigation'
-import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
+import { MediaCarousel } from '../comments/mediaCarousal'
+import { Share2 } from 'lucide-react'
 
 
 interface PostProps{
@@ -91,12 +82,20 @@ const Post = ({post}:PostProps) => {
       
         {/* Content div */}
         <Linkify>
-          <div className="ml-16 whitespace-pre-line break-words ">
+          <div className="pl-10 md:pl-16 w-full whitespace-pre-line break-words ">
             {post.content}
             <div>
-              {post?.attachments.length > 0 && (
+              {/* {post?.attachments.length > 0 && (
                 <MediaPreviews attachments={post.attachments} />
-              )}
+              )} */}
+             {post?.attachments?.length > 0 && (
+              <div 
+                onClick={(e) => e.stopPropagation()} 
+                className="mt-2"
+              >
+                <MediaCarousel mediaItems={post.attachments}/>
+              </div>
+)}
             </div>
           </div>
         </Linkify>
@@ -140,119 +139,4 @@ const Post = ({post}:PostProps) => {
   )
 }
 export default Post
-
-interface MediaPreviewsProps {
-    attachments:Media[],
-}
-
-function MediaPreviews({attachments}:MediaPreviewsProps) {
-   return(
-    <div onClick={(e)=>e.stopPropagation()} className={cn("w-full flex shadow-md bg-gray-300 rounded-lg p-2 flex-col items-center gap-3" ,attachments.length>1 && "sm:grid sm:grid-cols-2")}>
-{/* <div className='w-full flex flex-col items-center gap-3'>  */}
-    {
-        attachments.map((m)=>(
-            <MediaPreview media={m} key={m.id}/>
-        ))
-    }
-
-    {/* <MediaCarousel mediaItems={attachments}/> */}
-</div>
-   )
-}
-
-interface MediaPreviewProps{
-    media:Media
-}
-
-function MediaPreview({media}:MediaPreviewProps) {
-    const [isOpen, setisOpen] = useState(false)
-    const closeModal=()=>{
-      setisOpen(false)
-    }
-    if(media.type === "IMAGE"){
-    return (
-        <>
-         <CldImage src={media.publicId} alt='' onClick={()=>setisOpen(true)} height={600} width={500} crop={"fill"}         
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="rounded-lg"/>
-             {isOpen && (
-                <Dialog open={isOpen} onOpenChange={closeModal}> 
-                <DialogContent className="h-[95%] max-h-[95vh] max-w-[90%]  overflow-auto flex flex-col flex-1">
-                    <DialogTitle></DialogTitle>
-                    <div className="flex justify-center items-center bg-black bg-opacity-80 p-2 rounded-lg overflow-auto">
-                    <CldImage
-                        src={media?.publicId || '/fallback-image.jpg'} // Replace with a valid fallback image
-                        alt="Preview"
-                        height={700}
-                        width={500}
-                        crop={"fill"}
-                        // fill // Makes the image take available space while maintaining aspect ratio
-                        className="object-contain rounded-lg h-fit"
-                    />
-                    </div>
-                </DialogContent>
-                </Dialog>)}
-        </>
-
-    )}
-    if(media.type === "VIDEO") {
-        return (
-            <div>
-               <VideoCard video={{publicId:media.publicId}} onDownload={()=>console.log("")}/>
-            </div>
-        )
-    }
-    else {
-            return <><span className='text-destructive'> unsupported media type</span></>
-        }
-    }
-    
-
-    export const MediaCarousel = ({ mediaItems }: { mediaItems:Media[] }) => {
-        const swiper = useSwiper()
-  return (
-  
-     <Swiper
-        slidesPerView={1}
-        spaceBetween={30}
-        keyboard={{
-          enabled: true,
-        }}
-        pagination={{
-            
-          clickable: true,
-        }}
-        navigation={true}
-        modules={[Keyboard, Pagination, Navigation]}
-        className="mySwiper"
-      >
-    {
-        mediaItems.map((media,index)=>
-            {
-            if(media?.type === "IMAGE") return (<SwiperSlide key={index}> <CldImage
-                alt={''}
-                width={200}
-                height={200}
-                src={media?.publicId}
-              /></SwiperSlide>)
-            else{
-                return (
-                <SwiperSlide key={index}>
-                    <VideoCard video={{publicId:media?.publicId}} onDownload={()=>{}}/>
-                </SwiperSlide>
-                )
-            }
-            }
-        )
-    }
-    <button onClick={()=>swiper.slideNext()}>
-        <ArrowRight/>
-    </button>
-    
-
-  </Swiper>
- 
-  
-  )
-}
 

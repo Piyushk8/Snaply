@@ -6,11 +6,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import React from 'react';
 import axios from 'axios';
-import { Button } from '@/components/ui/button';
 import InfinityScrollContainer from '@/components/infinityScrollContainer';
 import PostLoadingSkelton, { PostsLoadingSkeleton } from '@/components/posts/PostLoadingSkelton';
-import DeletePostDialog from '@/components/posts/DeletePostDialog';
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { FaSmileBeam } from 'react-icons/fa';
 
 interface UsersPostsProps{

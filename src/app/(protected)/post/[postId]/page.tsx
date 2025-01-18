@@ -47,7 +47,7 @@ const PostPage = async({params}:{params:{postId:string}}) => {
          <div className='px-5'>
             <CommentInput post={post}/>
          </div>
-         <hr className=""/>
+         <hr className="mb-2"/>
         <div>
             <Comments post={post}/>
         </div>
