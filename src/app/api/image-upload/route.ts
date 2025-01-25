@@ -68,7 +68,7 @@ export const POST = async (req: NextRequest) => {
             );
             uploadStream.end(buffer);
         });
-        console.log(result)
+
 
         await prisma.user.update({
             where:{id:user?.id},

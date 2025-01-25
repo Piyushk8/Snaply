@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { boolean, z } from "zod";
 import Placeholder from "@tiptap/extension-placeholder";
-import characterCount from "@tiptap/extension-character-count"
+import characterCount from "@tiptap/extension-character-count";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,12 @@ import { UploadingFile, useMediaUpload } from "./useMediaUpload";
 import { ImageIcon, Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const FormSchema = z.object({
   content: z
@@ -44,14 +49,12 @@ const FormSchema = z.object({
     }),
 });
 
-
-
 export function TextareaForm() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dragCounter = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [errorMessage, seterrorMessage] = useState("")
-  
+  const [errorMessage, seterrorMessage] = useState("");
+
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
 
@@ -62,7 +65,7 @@ export function TextareaForm() {
     removeAttachment,
     reset: resetUpload,
   } = useMediaUpload();
-  
+
   const refreshFeed = async (post: PostData) => {
     const queryFilter: QueryFilters = { queryKey: ["post-feed", "for-you"] };
     await queryClient.cancelQueries(queryFilter);
@@ -86,8 +89,7 @@ export function TextareaForm() {
     );
   };
 
-  
-  // All handlers for drag and drop 
+  // All handlers for drag and drop
   const handleDragEnter = (e: React.DragEvent) => {
     e.preventDefault();
     dragCounter.current += 1;
@@ -105,7 +107,7 @@ export function TextareaForm() {
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
 
-    const filelist = e.dataTransfer?.files
+    const filelist = e.dataTransfer?.files;
     const files = Array.from(filelist); // Convert FileList to array
     if (files.length) {
       handleFile(files);
@@ -118,34 +120,31 @@ export function TextareaForm() {
     const files = e.target?.files;
     handleFile(files);
   };
-  
+
   const handleFile = (files: File[]) => {
     if (!files) return;
-    
+
     // Check file type
-    files?.map((file)=>{
-      const validTypes = ["image/jpeg", "image/png", "image/gif", "video/mp4"];
+    files?.map((file) => {
+      const validTypes = ["image/jpeg", "image/png", "image/gif", "video/*"];
       if (!validTypes.includes(file.type)) {
         // setError('Please upload an image (JPG, PNG, GIF) or video (MP4)');
-        seterrorMessage("Media type not supported")
-        console.log("not valid")
-       return;
+        seterrorMessage("Media type not supported");
+        return;
       }
-      
+
       // Check file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
         // setError('File size should be less than 10MB');
-        console.log("not valid")
+        console.log("not valid file type");
         return;
       }
-    })
-      uploadAttachments(files)
-      setIsDragging(false)
-      
+    });
+    uploadAttachments(files);
+    setIsDragging(false);
   };
 
-
-//Form and Submissions
+  //Form and Submissions
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -178,8 +177,9 @@ export function TextareaForm() {
         }
         if (data.success) {
           form.reset({ content: "" });
-          editor?.commands.setContent('')
+          editor?.commands.setContent("");
           refreshFeed(data?.post);
+          resetUpload()
           toast({
             style: { width: "fit-content", backgroundColor: "green" },
             title: "Posted Successfully!",
@@ -189,7 +189,7 @@ export function TextareaForm() {
     });
   }
 
-  const [wordCount, setWordCount] = useState(false)
+  const [wordCount, setWordCount] = useState(false);
   const editor = useEditor({
     extensions: [
       characterCount.configure({
@@ -206,27 +206,20 @@ export function TextareaForm() {
     onUpdate: ({ editor }) => {
       // Update form when editor content changes
       const content = editor.getText();
-      setWordCount(true)
-      form.setValue('content', content, { 
+      setWordCount(true);
+      form.setValue("content", content, {
         shouldValidate: true,
-        shouldDirty: true 
+        shouldDirty: true,
       });
     },
-    onFocus({editor}) {
-          setWordCount(true)
+    onFocus({ editor }) {
+      setWordCount(true);
     },
-    onBlur(){
-      setWordCount(false)
-      
-    }
+    onBlur() {
+      setWordCount(false);
+    },
   });
-  // const getWordCount = useCallback(() => {
-  //   if (!editor) return 0;
-  //   const text = editor.getText();
-  //   const words = text.trim().split(/\s+/);
-  //   return words[0] === '' ? 0 : words.length;
-  // }, [editor]);
-
+  
   const getCharacterCount = useCallback(() => {
     if (!editor) return 0;
     return editor.getText().length;
@@ -251,24 +244,26 @@ export function TextareaForm() {
                   onDragOver={handleDragOver}
                   onDrop={handleDrag}
                 >
-                    <Controller
+                  <Controller
                     name="content"
                     control={control}
                     render={({ field }) => (
                       <EditorContent
                         editor={editor}
                         className={cn(
-                         "min-h-[150px] w-full rounded-lg border border-input px-3 py-2",
-                         "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",  
+                          "min-h-[150px] w-full rounded-lg border border-input px-3 py-2",
+                          "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2"
                         )}
                         {...field}
                       />
                     )}
                   />
-                   <div className="absolute bottom-2 right-2 text-xs text-gray-500 space-x-3">
-                          {/* <span>{getWordCount()} words</span> */}
-                          <span>{wordCount && getCharacterCount() + "/240 characters"}</span>
-                    </div>
+                  <div className="absolute bottom-2 right-2 text-xs text-gray-500 space-x-3">
+                    {/* <span>{getWordCount()} words</span> */}
+                    <span>
+                      {wordCount && getCharacterCount() + "/240 characters"}
+                    </span>
+                  </div>
 
                   {isDragging && (
                     <div className="absolute inset-0 flex items-center justify-center bg-blue-50/80">
@@ -287,7 +282,7 @@ export function TextareaForm() {
                     ref={fileInputRef}
                     className="hidden"
                     accept="image/*,video/*"
-                    onChange={(e)=>handleFileInput}
+                    onChange={(e) => handleFileInput}
                   />
                 </div>
               </FormControl>
@@ -298,7 +293,9 @@ export function TextareaForm() {
             </FormItem>
           )}
         />
-        {form.formState.isSubmitted && <FormMessage>{errors.content?.message}</FormMessage>}
+        {form.formState.isSubmitted && (
+          <FormMessage>{errors.content?.message}</FormMessage>
+        )}
         {!!attachmentUploadInfo.length && (
           <AttachmentPreviews
             attachments={attachmentUploadInfo}
@@ -411,16 +408,16 @@ function AttachmentPreview({
 }: AttachmentPreviewProps) {
   const src = URL.createObjectURL(file);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string|null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  const openModal = (src:string) => {
-      setSelectedImage(src);
-      setIsOpen(true);
+  const openModal = (src: string) => {
+    setSelectedImage(src);
+    setIsOpen(true);
   };
 
   const closeModal = () => {
-      setIsOpen(false);
-      setSelectedImage(null);
+    setIsOpen(false);
+    setSelectedImage(null);
   };
 
   return (
@@ -458,41 +455,38 @@ function AttachmentPreview({
         </div>
       )}
 
-
-         {/* Full-screen modal for viewing the selected image */}
-         {isOpen && (
-
-      
-<Dialog open={isOpen} onOpenChange={closeModal}> {/* Ensure `onClose` is used */}
-  <DialogHeader className="flex justify-between">
-    <button
-      onClick={closeModal}
-      className="text-black hover:text-red-500 p-2 rounded-full"
-    >
-      ✕ {/* Built-in header close button */}
-    </button>
-  </DialogHeader>
-  <DialogContent className="h-[95%] max-h-[95vh] overflow-auto flex flex-col flex-1">
-    <DialogTitle className="text-center">Preview</DialogTitle>
-    <div className="flex gap-2 justify-between mb-2">
-      <Button className="w-1/2 hover:bg-slate-700">Crop</Button>
-      <Button className="w-1/2 hover:bg-slate-700">Alt</Button>
-    </div>
-    <div className="flex-1 flex justify-center items-center bg-black bg-opacity-80 p-2 rounded-lg overflow-auto">
-      <Image
-        src={selectedImage || '/fallback-image.jpg'} // Replace with a valid fallback image
-        alt="Preview"
-        height={400}
-        width={500}
-        // fill // Makes the image take available space while maintaining aspect ratio
-        className="object-contain rounded-lg h-fit"
-      />
-    </div>
-  </DialogContent>
-</Dialog>
-
-            )}
-
+      {/* Full-screen modal for viewing the selected image */}
+      {isOpen && (
+        <Dialog open={isOpen} onOpenChange={closeModal}>
+          {" "}
+          {/* Ensure `onClose` is used */}
+          <DialogHeader className="flex justify-between">
+            <button
+              onClick={closeModal}
+              className="text-black hover:text-red-500 p-2 rounded-full"
+            >
+              ✕ {/* Built-in header close button */}
+            </button>
+          </DialogHeader>
+          <DialogContent className="h-[95%] max-h-[95vh] overflow-auto flex flex-col flex-1">
+            <DialogTitle className="text-center">Preview</DialogTitle>
+            <div className="flex gap-2 justify-between mb-2">
+              <Button className="w-1/2 hover:bg-slate-700">Crop</Button>
+              <Button className="w-1/2 hover:bg-slate-700">Alt</Button>
+            </div>
+            <div className="flex-1 flex justify-center items-center bg-black bg-opacity-80 p-2 rounded-lg overflow-auto">
+              <Image
+                src={selectedImage || "/fallback-image.jpg"} // Replace with a valid fallback image
+                alt="Preview"
+                height={400}
+                width={500}
+                // fill // Makes the image take available space while maintaining aspect ratio
+                className="object-contain rounded-lg h-fit"
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }

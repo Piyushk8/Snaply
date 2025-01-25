@@ -303,7 +303,7 @@ export const MediaGrid = ({ media }: { media: Media[] }) => {
     return (
       <div
         key={index}
-        className={`relative overflow-hidden ${getMediaClass(index, media.length)}`}
+        className={`flex justify-center items-center relative overflow-hidden ${getMediaClass(index, media.length)}`}
         onClick={() => setActiveMedia(item)}
       >
         {isVideo ? (
@@ -316,10 +316,10 @@ export const MediaGrid = ({ media }: { media: Media[] }) => {
             src={getCldVideoUrl({
               src:item?.publicId,
               quality:"auto",
-              crop:"fill"
+              crop:"fill_pad"
             })}
             controls
-            className="max-w-full max-h-full"
+            className="bg-muted  rounded-2xl max-w-full max-h-full"
           />
         ) : (
           <CldImage
@@ -327,7 +327,7 @@ export const MediaGrid = ({ media }: { media: Media[] }) => {
             height={800}
             src={item.publicId}
             alt={`Media ${index + 1}`}
-            className="w-full h-full object-cover"
+            className="w-full bg-muted h-full object-cover"
             crop="fill"
           />
         )}
@@ -364,8 +364,8 @@ export const MediaGrid = ({ media }: { media: Media[] }) => {
                 height={1200}
                 src={activeMedia.publicId}
                 alt={"Full view"}
-                className="max-w-full max-h-full"
-                crop="fit"
+                className="bg-primary-foreground max-w-full max-h-full"
+                crop="fill"
               />
               <X size={40} className="absolute text-gray-700 bg-neutral-200 p-3 rounded-full top-3 right-3"></X>
               </div>

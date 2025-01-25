@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest) => {
         const formData = await req.formData();
         const file = formData.get("file") as File | null;
         const MAX_SIZE = 40 * 1024 * 1024; // 100MB
-        console.log("reached",file)
+
         if (!file) {
             return NextResponse.json({ error: "File not found" }, { status: 400 });
         }
@@ -45,7 +45,6 @@ export const POST = async (req: NextRequest) => {
 
         // Generate a unique public ID based on the file name
         const fileName = file.name.split('.')[0];
-        const publicId = `Attachments/${fileName}`;
         let options: any = {
             folder: "Attachments",
             public_id: fileName,
@@ -66,18 +65,7 @@ export const POST = async (req: NextRequest) => {
             };
         }
 
-        console.log(options)
         // Check and delete existing file if necessary
-        try {
-
-            const existingResource = await cloudinary.api.resource(publicId);
-            if (existingResource) {
-                await cloudinary.uploader.destroy(publicId);
-                console.log(`Deleted existing file: ${publicId}`);
-            }
-        } catch (error) {
-            console.log("No existing file found, proceeding with upload...");
-        }
 
         // Upload new file
         const result = await new Promise<CloudinaryUploadResult>((resolve, reject) => {
@@ -90,7 +78,7 @@ export const POST = async (req: NextRequest) => {
             );
             uploadStream.end(buffer);
         });
-        console.log(result)
+        console.log(result.public_id)
 
       
 
@@ -105,23 +93,49 @@ export const POST = async (req: NextRequest) => {
     }
 }
 
-
-
-export const DELETE = async (req:NextRequest) => {
-    const searchParams= req.nextUrl.searchParams
+export const DELETE = async (req: NextRequest) => {
+    const searchParams = req.nextUrl.searchParams
     const publicId = searchParams.get("Id")
-    console.log(publicId)
-    if(!publicId) return new Error("No Public Id found")
-    try {
 
-        const existingResource = await cloudinary.api.resource(publicId);
-        if (existingResource) {
-            const result =  await cloudinary.uploader.destroy(publicId);
-            console.log(`Deleted existing file: ${publicId}`);
-        }
-        return NextResponse.json({deleted:true,publicId})
-    } catch (error) {
-        console.log("Some error occured while deleting from cloudinary");
+    if (!publicId) {
+        return NextResponse.json({ error: "No Public ID found" }, { status: 400 });
     }
 
-}
+    try {
+        // Try deleting with different resource types
+        const resourceTypes = ['video', 'image', 'raw'];
+        
+        for (const type of resourceTypes) {
+            try {
+                const deleteResult = await cloudinary.uploader.destroy(
+                    publicId, 
+                    { resource_type: type }
+                );
+
+                if (deleteResult.result === 'ok') {
+                    return NextResponse.json({
+                        deleted: true,
+                        publicId,
+                        message: `Deleted successfully as ${type}`
+                    });
+                }
+            } catch (typeError) {
+                // Continue to next resource type if deletion fails
+                continue;
+            }
+        }
+
+        // If no deletion succeeded
+        return NextResponse.json({
+            deleted: false,
+            message: "Failed to delete file"
+        }, { status: 404 });
+
+    } catch (error) {
+        console.error('Deletion error:', error);
+        return NextResponse.json({
+            deleted: false,
+            message: "Error occurred while deleting from Cloudinary"
+        }, { status: 500 });
+    }
+};
