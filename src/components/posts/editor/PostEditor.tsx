@@ -14,7 +14,7 @@ export default function PostEditor() {
     let Image = session?.user.image
    
   return (
-    <div className=" rounded-2xl bg-card p-5 shadow-sm">
+    <div className="bg-card border-border border rounded-2xl p-5 shadow-sm">
       <div className="flex items-start ">
         <ClientCldImage
           src={Image} // Fallback Cloudinary avatar

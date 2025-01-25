@@ -5,7 +5,7 @@ import { Dot } from "lucide-react";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex bg-gray-200 min-h-screen flex-col">
+    <div className="flex  dark:bg-background bg-secondary  min-h-screen flex-col">
       {/* Top Navbar */}
       <Navbar />
 

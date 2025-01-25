@@ -19,9 +19,9 @@ export default async function  Home() {
       <div className="w-full mb-3 min-w-0 space-y-5 ">
         <PostEditor/>
         <Tabs className="" defaultValue="for-you">
-          <TabsList className=" w-full selection:bg-black bg-transparent">
-            <TabsTrigger value="for-you">For you</TabsTrigger>
-            <TabsTrigger value="following">Following</TabsTrigger>
+          <TabsList className=" w-full selection:bg-card-foreground ">
+            <TabsTrigger className="dark:border border-border" value="for-you">For you</TabsTrigger>
+            <TabsTrigger className="dark:border border-border" value="following">Following</TabsTrigger>
           </TabsList>
           <TabsContent value="for-you">
             <ForYourFeed/>

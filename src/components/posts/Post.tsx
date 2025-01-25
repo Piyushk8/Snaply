@@ -32,7 +32,7 @@ const Post = ({ post }: PostProps) => {
 
   return (
     <article
-      className="group/post space-y-3 bg-card rounded-2xl p-5 shadow-sm hover:bg-slate-50 relative"
+      className="group/post space-y-3 bg-card dark:border border-border rounded-2xl p-5 shadow-sm relative"
       onClick={handlePostClick}
     >
       {/* Upper Icons div */}
@@ -101,10 +101,10 @@ const Post = ({ post }: PostProps) => {
 
       {/* Action buttons */}
       <div
-        className="flex justify-around text-sm text-gray-600"
+        className="flex justify-around text-sm text-card-foreground"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center hover:bg-slate-100 rounded-full p-1">
+        <div className="flex items-center hover:bg-accent rounded-full p-1">
           <LikeButton
             postId={post.id}
             initialState={{
@@ -115,10 +115,10 @@ const Post = ({ post }: PostProps) => {
             }}
           />
         </div>
-        <div className="flex items-center gap-[1px] hover:bg-slate-100 rounded-full p-1">
+        <div className="flex items-center gap-[1px] hover:bg-accent rounded-full p-1">
           <CommentButton post={post} user={session?.user} />
         </div>
-        <div className="flex items-center hover:bg-slate-100 rounded-full p-1">
+        <div className="flex items-center hover:bg-accent rounded-full p-1">
           <BookmarkButton
             initialState={{
               isBookMarkedByUser: post.bookmarks.some(
@@ -128,7 +128,7 @@ const Post = ({ post }: PostProps) => {
             postId={post.id}
           />
         </div>
-        <div className="flex items-center hover:bg-slate-100 rounded-full p-1">
+        <div className="flex items-center hover:bg-accent rounded-full p-1">
           <Share2 size={20} color="lightgray" />
         </div>
       </div>

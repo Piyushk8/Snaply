@@ -66,8 +66,8 @@ async function ProfilePage({ params }: ProfilePageProps) {
 
   const user = await getUser(username, session.user.id);
   return (
-    <main className="flex w-full min-w-0 gap-5">
-      <div className="w-full min-w-0 space-y-5">
+    <main className=" flex w-full min-w-0 gap-5">
+      <div className="border-border dark:border p-2 w-full min-w-0 space-y-5">
         <UserProfileSection user={user} loggedInUserId={session.user.id} />
         <div className='p-5 bg-card rounded-2xl shadow-sm '>
             <h2 className=' m-2 rounded-sm text-center font-semibold text-2xl'>

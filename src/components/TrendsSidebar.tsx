@@ -47,7 +47,7 @@ const WhoToFollow=async() => {
     })
     // console.log("users to follow:",usersToFollow)
     return (
-    <div className='space-y-5 rounded-2xl bg-card p-5 shadow-sm'>
+    <div className='space-y-5 border border-border rounded-2xl bg-card p-5 shadow-sm'>
         <div className='z-30 bg-card w-full relative'>
           <SearchField/>
         </div>
@@ -103,7 +103,7 @@ export const TrendingTopicsSection = async()=>{
 
     const TrendingTopics = await getTrendingTopics();
     // co nsole.log(TrendingTopics)
-    return <div className='space-y-5 mt-3 rounded-2xl bg-card p-5 shadow-sm'>
+    return <div className='border-border border space-y-5 mt-3 rounded-2xl bg-card p-5 shadow-sm'>
         <div className='text-xl font-bold'>Trending Topics</div>
             {
                 TrendingTopics.map(({hashtag,count})=>{
