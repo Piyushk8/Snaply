@@ -3,7 +3,7 @@
 import React from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
-import { Bell, Bookmark, Home } from 'lucide-react'
+import { Bell, Bookmark, Home, Search } from 'lucide-react'
 import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
@@ -76,7 +76,7 @@ const MenuBar = async({className}:MenuBarProps) => {
                 asChild
             >
                 <Link href={"/search"}>
-                <Home />
+                <Search />
                 <span className='hidden md:inline'>Search</span>
                 </Link>
             </Button>

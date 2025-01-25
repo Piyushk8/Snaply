@@ -14,7 +14,11 @@ import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { FaSmileBeam } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 
-const SearchResultsPage =({query}:{query:string}) => {
+interface SearchResultsPagePrps{
+  query:string,
+  queryType?:string}
+
+const SearchResultsPage =({query,queryType}:SearchResultsPagePrps) => {
     const {data:session} = useSession()
     const user = session?.user
   
@@ -31,6 +35,7 @@ const SearchResultsPage =({query}:{query:string}) => {
     queryFn: async ({ pageParam = null }) => {
       const { data } = await axios.get(`/api/search`, {
         params: { 
+            type:queryType,
             q:query,
             ...pageParam ? {cursor: pageParam} : {} }, // Use `params` for query parameters
       });

@@ -26,10 +26,10 @@ export default function UserTooltip({
         return <>{children}</>
     }
     return (<>
-        <TooltipProvider>
+        <TooltipProvider >
             <Tooltip>
                 <TooltipTrigger asChild>{children}</TooltipTrigger>
-                <TooltipContent className="w-full">
+                <TooltipContent className="w-full z-40">
                     <div className="bg-card shadow-2xl flex  flex-col rounded-2xl w-[20rem]  gap-3 break-words px-3 py-3 md:min-w-52">
                         <div className="flex items-center justify-between gap-4">
                             <Link href={`/user/${user?.username}`}>
