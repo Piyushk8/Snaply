@@ -18,14 +18,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  rewrites: async () => {
+  async redirects() {
     return [
       {
-        source: "/hashtag/:tag",
-        destination: "/search?q=:tag"  // Fixed typo in "destination"
+        source: '/hashtag/:tag',
+        destination: '/search?q=:tag',
+        permanent: false
       }
     ]
   }
+
 };
 
 export default nextConfig;

@@ -41,13 +41,13 @@ const PostPage = async({params}:{params:{postId:string}}) => {
     
     return (
      <div className=' flex flex-1 gap-4'>
-       <div className='lg:w-3/5 w-full  px-1 bg-card rounded-2xl'>
+       <div className='lg:w-3/5 w-full  px-1 mb-2 bg-card rounded-2xl'>
         <Post post={post}/>
-        <hr className=""/>
-         <div className='px-5'>
+        <hr className="my-2"/>
+         <div className='px-5 mb-2'>
             <CommentInput post={post}/>
          </div>
-         <hr className="mb-2"/>
+         <hr className="py-2"/>
         <div>
             <Comments post={post}/>
         </div>

@@ -10,10 +10,10 @@ import { fileRouter } from "./api/uploadthing/core";
 // Metadata configuration
 export const metadata: Metadata = {
   title: {
-    template: "%s | MyApp",
+    template: "%s | Nest",
     default: "MyApp",
   },
-  description: "A Next.js Application",
+  description: "Your place to share",
 };
 
 export default function RootLayout({

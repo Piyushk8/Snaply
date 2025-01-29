@@ -51,8 +51,9 @@ const Comments = ({post}:CommentsProps) => {
     //destructure comments from data
     
       const comments = data?.pages.flatMap(page => page.comments) || []// Flat map to combine all pages of posts
-      if(!comments && !isFetching) return (<div className='gap-3 text-center font-bold text-xl  flex justify-center items-center'>
-                No Posts Found <FaSmileBeam className=''/>
+      if(!comments.length && !isFetching) return (<div className='flex-col gap-3 text-center font-bold text-xl  flex justify-center items-center'>
+                <div>No comments</div>  
+                <div>Be the first to comment</div>  
                 </div>)
 
     // console.log("commments",comments)

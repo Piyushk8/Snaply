@@ -15,7 +15,7 @@ import { FaSmileBeam } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 
 interface SearchResultsPagePrps{
-  query:string,
+  query?:string,
   queryType?:string}
 
 const SearchResultsPage =({query,queryType}:SearchResultsPagePrps) => {
@@ -50,7 +50,6 @@ const SearchResultsPage =({query,queryType}:SearchResultsPagePrps) => {
   
   const posts = data?.pages?.flatMap(page => page?.posts); // Flat map to combine all pages of posts
 
-  console.log("seatcj",data,posts)
   if( !(!!posts?.length) && status==="success") return (<div className='gap-3 text-center font-bold text-xl  flex justify-center items-center'>
              No Posts Found <FaSmileBeam className=''/>
              </div>)
@@ -69,12 +68,19 @@ const SearchResultsPage =({query,queryType}:SearchResultsPagePrps) => {
         </p>
       );
     }
+    console.log(posts)
   return (
    <div className='w-full space-y-5 flex  flex-col  items-center'>
 
       <InfinityScrollContainer className={"space-y-3 w-full md:w-2/3  "} onBottomReached={()=>{
         hasNextPage&&!isFetching && fetchNextPage()}}
         >
+        {posts?.map((post: PostData,index) => (
+          <Post post={post} key={index} />
+        ))}
+        {posts?.map((post: PostData,index) => (
+          <Post post={post} key={index} />
+        ))}
         {posts?.map((post: PostData,index) => (
           <Post post={post} key={index} />
         ))}

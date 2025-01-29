@@ -18,23 +18,22 @@ export const GET =  async (req:NextRequest) => {
         const pageSize = 10
 
         const posts = await prisma.post.findMany({
-            where:{
-                OR:[
-                    {
-                        content:{search:searchQuery}
-                    },
-                    {
-                        user:{
-                            username:{search:searchQuery}
-                        }
-                    }
-                ]
-            },
-            include:getPostDataInclude(session?.user?.id)
-            ,orderBy:{createdAt:"desc"},
-            take:pageSize+1,
-            cursor:cursor?{id:cursor}:undefined,
-        });
+            where: searchQuery
+              ? {
+                  OR: [
+                    { content: { search: searchQuery } },
+                    { user: { username: { search: searchQuery } } }
+                  ],
+                }
+              : {}, // If searchQuery is null, fetch all posts
+            include: getPostDataInclude(session?.user?.id),
+            orderBy: [
+              { likes: { _count: "desc" } }, // Order by most liked posts first
+              { createdAt: "desc" }, // Then order by newest posts
+            ],
+            take: pageSize + 1,
+            cursor: cursor ? { id: cursor } : undefined,
+          });
         console.log(posts,q,cursor)
         const nextCursor = posts.length > pageSize ? posts[pageSize]?.id : null
 

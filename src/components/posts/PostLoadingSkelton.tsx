@@ -6,7 +6,7 @@ export const PostsLoadingSkeleton=()=>{
         <div className=' space-y-5'>
         <PostLoadingSkelton/>
         <PostLoadingSkelton/>
-        <PostLoadingSkelton/>
+
         </div>
     )
 }

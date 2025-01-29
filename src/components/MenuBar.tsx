@@ -28,7 +28,7 @@ const MenuBar = async({className}:MenuBarProps) => {
             }
         })
    return (
-    <div className="space-y-5">
+    <div className="space-y-5 z-20">
         <div className={`${className} border-border border`}>
         <Button variant={"ghost"}
                 className='flex items-center justify-start gap-3'

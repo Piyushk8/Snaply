@@ -30,7 +30,7 @@ export default function UserTooltip({
             <Tooltip>
                 <TooltipTrigger asChild>{children}</TooltipTrigger>
                 <TooltipContent className="w-full z-40">
-                    <div className="bg-card shadow-2xl flex  flex-col rounded-2xl w-[20rem]  gap-3 break-words px-3 py-3 md:min-w-52">
+                    <div className="bg-card dark:border border-border shadow-2xl flex  flex-col rounded-2xl w-[20rem]  gap-3 break-words px-3 py-3 md:min-w-52">
                         <div className="flex items-center justify-between gap-4">
                             <Link href={`/user/${user?.username}`}>
                                 <ClientCldImage classname="shadow-2xl" height={70} width={70} alt="user imaage"/>
