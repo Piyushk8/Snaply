@@ -36,7 +36,6 @@ export function useUpdateProfileMutation() {
       values: updateUserProfileValues;
       avatar?: File;
     }) => {
-      console.log("usemutation started",)
       return Promise.all([
         updateUserProfile(values),
         avatar && uploadImage(avatar),

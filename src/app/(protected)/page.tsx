@@ -6,13 +6,10 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import FollowingFeed from "./followingFeed";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import axios from "axios";
-
 
 export default async function  Home() {
   const session = await auth()
-  console.log("home",session)
-  if(!session?.user?.profileComplete) redirect(`/profile?email=${encodeURIComponent(session?.user.email)}`)
+  if(!session?.user?.profileComplete) redirect(`/auth/profile?email=${encodeURIComponent(session?.user.email)}`)
    
     return (
     <main className="gap-5 flex  w-full min-w-0 ">

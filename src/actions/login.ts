@@ -18,9 +18,7 @@ export const login = async(values:z.infer<typeof LoginSchmema>)=>{
 
     const {email,password } = validatedFields.data
     try {
-        console.log(email,password)
-        const userExists = await getUserByEmail(email)
-        
+        const userExists = await getUserByEmail(email)     
         if(!userExists) return {error:"User does not exist!"}
         const res = await signIn("credentials",{email,
             password,

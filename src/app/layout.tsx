@@ -10,8 +10,8 @@ import { fileRouter } from "./api/uploadthing/core";
 // Metadata configuration
 export const metadata: Metadata = {
   title: {
-    template: "%s | Nest",
-    default: "MyApp",
+    template: "%s |Snaply",
+    default: "Snaply",
   },
   description: "Your place to share",
 };

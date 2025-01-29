@@ -68,7 +68,7 @@ const NotificationPage = () => {
       return (
           <>
               <div className='text-center text-4xl w-full flex justify-center items-center gap-3'>
-                  Fetching Posts <Loader2 className='animate-spin text-4xl'/>
+                   <Loader2 className='animate-spin text-card-foreground text-2xl'/>
               </div>
           </>
       )

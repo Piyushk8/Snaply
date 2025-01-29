@@ -14,15 +14,15 @@ interface ProfileSchema{
     email:string,
     userName:string,
     bio?:string
-    avatarUrl?:string
+    image?:string
 }
 
 
 export const OauthLogin = async(values:ProfileSchema)=>{
     
-    const {email, userName,bio,avatarUrl} = values
+    const {email, userName,bio,image} = values
     if(!userName) return {error:"Enter a Username"}
-  
+
     //Ensure the username is unique
     const existingUserName = await prisma.user.findUnique({
       where: { username:userName },
@@ -39,7 +39,7 @@ export const OauthLogin = async(values:ProfileSchema)=>{
       data: {
         username:userName,
         bio,
-        image:avatarUrl,
+        image,
         profileComplete:true
       },
     });
