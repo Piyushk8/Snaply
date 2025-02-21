@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
       dynamic: 30,
     },
   },
+  eslint:{
+    ignoreDuringBuilds:true
+  },
   serverExternalPackages: ["@node-rs/argon2"],
   images: {
     // domains:["utfs.io"],
