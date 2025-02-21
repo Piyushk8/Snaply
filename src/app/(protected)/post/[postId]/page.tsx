@@ -1,53 +1,51 @@
-import { auth } from '@/auth'
-import CommentInput from '@/components/comments/CommentInput'
-import Comments from '@/components/comments/comments'
-import Post from '@/components/posts/Post'
-import TrendsSidebar from '@/components/TrendsSidebar'
-import prisma from '@/lib/prisma'
-import { getPostDataInclude } from '@/lib/types'
-import { notFound } from 'next/navigation'
-import React, { cache } from 'react'
+import { auth } from "@/auth";
+import CommentInput from "@/components/comments/CommentInput";
+import Comments from "@/components/comments/comments";
+import Post from "@/components/posts/Post";
+import TrendsSidebar from "@/components/TrendsSidebar";
+import prisma from "@/lib/prisma";
+import { getPostDataInclude } from "@/lib/types";
+import { notFound } from "next/navigation";
+import React, { cache } from "react";
 
-const getPost = cache(async (postId:string,userId:string) => {
-    const post = await prisma.post.findUnique({
-      where:{
-        id:postId
-      },
-      include:getPostDataInclude(userId)
-    })
+const getPost = cache(async (postId: string, userId: string) => {
+  const post = await prisma.post.findUnique({
+    where: {
+      id: postId,
+    },
+    include: getPostDataInclude(userId),
+  });
 
-    return post
-  })
+  return post;
+});
 
+const PostPage = async ({ params }: { params: Promise<{postId:string }> }) => {
+  const session = await auth();
+  const param = params;
+  const postId = (await params).postId 
+  if (!postId) return notFound();
+  const post = await getPost(postId, session?.user?.id);
 
-const PostPage = async({params}:{params:{postId:string}}) => {
-  const session = await auth()
-    const param =  params
-    const postId = param?.postId as string
-    if(!postId) return notFound()
-  const post = await getPost(postId,session?.user?.id)
-  
-  if(!post) return notFound()
-    
-    return (
-     <div className=' flex flex-1 gap-4'>
-       <div className='lg:w-3/5 w-full  px-1 mb-2 bg-card rounded-2xl'>
-        <Post post={post}/>
-        <hr className="my-2"/>
-         <div className='px-5 mb-2'>
-            <CommentInput post={post}/>
-         </div>
-         <hr className="py-2"/>
+  if (!post) return notFound();
+
+  return (
+    <div className=" flex flex-1 gap-4">
+      <div className="lg:w-3/5 w-full  px-1 mb-2 bg-card rounded-2xl">
+        <Post post={post} />
+        <hr className="my-2" />
+        <div className="px-5 mb-2">
+          <CommentInput post={post} />
+        </div>
+        <hr className="py-2" />
         <div>
-            <Comments post={post}/>
+          <Comments post={post} />
         </div>
       </div>
-      <div className='hidden lg:block'>
-        <TrendsSidebar/>
+      <div className="hidden lg:block">
+        <TrendsSidebar />
       </div>
-     </div>
-  )
-}
+    </div>
+  );
+};
 
-export default PostPage
-
+export default PostPage;
