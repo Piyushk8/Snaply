@@ -17,8 +17,6 @@ export function useUpdateProfileMutation() {
   const router = useRouter();
 
   const queryClient = useQueryClient();
-
-  //const { startUpload: startAvatarUpload } = useUploadThing("avatar");
     const uploadImage = async(avatar:File)=>{
       const FileFormData = new FormData()
       FileFormData.append("file",avatar)

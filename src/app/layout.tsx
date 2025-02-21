@@ -4,9 +4,6 @@ import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import ReactQueryProvider from "./ReactQueryProvider";
 import { Toaster } from "@/components/ui/toaster";
-import {NextSSRPlugin} from "@uploadthing/react/next-ssr-plugin"
-import { extractRouterConfig } from "uploadthing/server";
-import { fileRouter } from "./api/uploadthing/core";
 // Metadata configuration
 export const metadata: Metadata = {
   title: {
@@ -25,7 +22,6 @@ export default function RootLayout({
     <SessionProvider>
       <html lang="en" suppressHydrationWarning>
         <body className="antialiased">
-          <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)}/>
           <ReactQueryProvider>
             <ThemeProvider
               attribute="class"
