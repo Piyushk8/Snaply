@@ -1,7 +1,7 @@
 "use server"
 
 import {RegisterSchmema} from "@/schemas"
-import bcrypt from "bcryptjs"
+import {hashSync} from "bcrypt-edge"
 import * as z from "zod"
 import { PrismaClient } from "@prisma/client"
 import { getUserByEmail } from "@/data/user"
@@ -14,7 +14,7 @@ export const register = async(values:z.infer<typeof RegisterSchmema>)=>{
         error:"Invalid fields! " }
     }
     const {email,password,name} = values
-    const hashedPass = await bcrypt.hash(password,10)
+    const hashedPass = await hashSync(password,10)
 
     const existingUser = await getUserByEmail(email)
     

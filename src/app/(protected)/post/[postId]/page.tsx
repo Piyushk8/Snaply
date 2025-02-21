@@ -4,8 +4,8 @@ import Comments from '@/components/comments/comments'
 import Post from '@/components/posts/Post'
 import TrendsSidebar from '@/components/TrendsSidebar'
 import prisma from '@/lib/prisma'
-import { getPostDataInclude, PostData, userData } from '@/lib/types'
-import { notFound, useParams } from 'next/navigation'
+import { getPostDataInclude } from '@/lib/types'
+import { notFound } from 'next/navigation'
 import React, { cache } from 'react'
 
 const getPost = cache(async (postId:string,userId:string) => {
@@ -22,7 +22,7 @@ const getPost = cache(async (postId:string,userId:string) => {
 
 const PostPage = async({params}:{params:{postId:string}}) => {
   const session = await auth()
-    const param = await params
+    const param =  params
     const postId = param?.postId as string
     if(!postId) return notFound()
   const post = await getPost(postId,session?.user?.id)

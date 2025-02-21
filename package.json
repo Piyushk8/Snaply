@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build || true" ,
+    "build": "next build || true",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
@@ -37,7 +37,7 @@
     "@uploadthing/react": "^7.1.3",
     "arctic": "^2.2.2",
     "axios": "^1.7.8",
-    "bcryptjs": "^2.4.3",
+    "bcrypt-edge": "^0.1.0",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.1",
     "clsx": "^2.1.1",
@@ -68,7 +68,6 @@
     "tailwind-merge": "^2.5.4",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^7.4.1",
     "zod": "^3.23.8"
   },
   "devDependencies": {

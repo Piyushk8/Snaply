@@ -1,6 +1,6 @@
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import bcrypt from "bcryptjs"
+import {compareSync} from "bcrypt-edge"
 import Credentials from 'next-auth/providers/credentials'
 import type {NextAuthConfig} from "next-auth"
 import { LoginSchmema } from "./schemas";
@@ -18,7 +18,7 @@ export default {
             clientSecret:process.env.GOOGLE_CLIENT_SECRET
         }),
         Credentials({
-            //@ts-expect-error
+            //@ts-ignore
             async authorize(credentials){
                 const validatedFields = LoginSchmema.safeParse(credentials);
                 if(validatedFields.success){
@@ -26,7 +26,7 @@ export default {
                     
                     const user = await getUserByEmail(email)
                     if(!user || !user.password) return null
-                    const passwordMatch = await bcrypt.compare(
+                    const passwordMatch = await compareSync(
                         password,
                         user.password
                     )
