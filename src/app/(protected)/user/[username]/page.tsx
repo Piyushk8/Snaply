@@ -18,7 +18,7 @@ import { CldImage } from 'next-cloudinary';
 import ClientCldImage from '@/components/CldImage';
 
 interface ProfilePageProps {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }
 
 interface UserProfileSectionProps {
