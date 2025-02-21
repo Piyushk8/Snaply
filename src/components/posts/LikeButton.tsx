@@ -1,7 +1,7 @@
 import { useToast } from '@/hooks/use-toast'
 import { LikeInfo } from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { QueryKey, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {  useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { Heart } from 'lucide-react'
 import React from 'react'

@@ -1,5 +1,4 @@
 import { useToast } from "@/hooks/use-toast";
-import { useUploadThing } from "@/lib/uploadthing";
 import {
   InfiniteData,
   QueryFilters,

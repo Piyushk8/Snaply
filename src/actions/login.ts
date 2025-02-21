@@ -4,7 +4,6 @@ import { signIn } from "@/auth"
 import { getUserByEmail } from "@/data/user"
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 import { LoginSchmema } from "@/schemas"
-import { error } from "console"
 import { AuthError } from "next-auth"
 
 import * as z from "zod"

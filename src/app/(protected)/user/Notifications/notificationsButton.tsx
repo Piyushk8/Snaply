@@ -1,10 +1,8 @@
 "use client"
-import { Button } from '@/components/ui/button'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {  useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { Bell } from 'lucide-react'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import React from 'react'
 
 const NotificationsButton = ({initialState}:{initialState:number}) => {
     

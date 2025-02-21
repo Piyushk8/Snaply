@@ -1,14 +1,6 @@
 "use server"
 
-import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
-import { error } from "console"
-import { useRouter } from "next/router"
-
-import { NextResponse } from "next/server"
-
-import * as z from "zod"
 
 interface ProfileSchema{
     email:string,
@@ -29,7 +21,6 @@ export const OauthLogin = async(values:ProfileSchema)=>{
     });
   
     if (existingUserName) {
-      //return NextResponse.json({ error: "Username already exists try another one!" }, { status: 400 });
       return {error:"Username Already Exists!"}
     }
   
@@ -44,7 +35,6 @@ export const OauthLogin = async(values:ProfileSchema)=>{
       },
     });
     return {success:"Profile Completed!"}
-    
-    //return NextResponse.json({ user: newUser }, { status: 200 });
+
      
 }

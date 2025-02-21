@@ -6,9 +6,9 @@ import { Social } from "./social";
 
 interface CardWrapperProps{
     children:React.ReactNode;
-    headerLabel:String;
-    backButtonLabel:String;
-    backButtonHref:String;
+    headerLabel:string;
+    backButtonLabel:string;
+    backButtonHref:string;
     showSocial?:boolean
 }
 

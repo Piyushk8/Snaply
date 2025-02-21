@@ -3,10 +3,8 @@
 import React from 'react'
 import { Button } from './ui/button'
 import Link from 'next/link'
-import { Bell, Bookmark, Home, Search } from 'lucide-react'
+import { Bookmark, Home, Search } from 'lucide-react'
 import { auth } from '@/auth'
-import { redirect } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import NotificationsButton from '@/app/(protected)/user/Notifications/notificationsButton'
 import prisma from '@/lib/prisma'
 

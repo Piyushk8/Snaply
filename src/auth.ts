@@ -2,8 +2,6 @@ import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import { PrismaAdapter} from "@auth/prisma-adapter"
 import prisma from "./lib/prisma"
-import { error } from "console"
-import { getUserByEmail } from "./data/user"
 //console.log(process.env.AUTH_SECRET)
 export const {
     handlers:{GET,POST} ,auth,signIn,signOut

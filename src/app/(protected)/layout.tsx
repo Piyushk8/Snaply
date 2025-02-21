@@ -1,7 +1,6 @@
 import Navbar from "@/components/navbar";
 import MenuBar from "@/components/MenuBar";
 import { Toaster } from "@/components/ui/toaster";
-import { Dot } from "lucide-react";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (

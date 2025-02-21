@@ -18,7 +18,7 @@ export default {
             clientSecret:process.env.GOOGLE_CLIENT_SECRET
         }),
         Credentials({
-            //@ts-ignore
+            //@ts-expect-error
             async authorize(credentials){
                 const validatedFields = LoginSchmema.safeParse(credentials);
                 if(validatedFields.success){

@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle} from "../ui/dialog";
 import { useDeleteCommentMutation, useEditComment } from "./mutations";
 import { Input } from "../ui/input";
 

@@ -1,7 +1,6 @@
 import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
-import { getNotificationDataInclude, getUserDataSelect, NotificationPage, notificationsData } from "@/lib/types"
-import { error } from "console"
+import { getNotificationDataInclude, NotificationPage,  } from "@/lib/types"
 import { NextRequest } from "next/server"
 
 export async  function GET(

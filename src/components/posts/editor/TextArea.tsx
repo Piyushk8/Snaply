@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { boolean, z } from "zod";
+import {  z } from "zod";
 import Placeholder from "@tiptap/extension-placeholder";
 import characterCount from "@tiptap/extension-character-count";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -14,12 +14,10 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useRef, useState, useTransition } from "react";
 import { SubmitPost } from "./action";
 import {
   useQueryClient,

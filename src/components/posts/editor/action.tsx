@@ -5,10 +5,7 @@ import prisma from "@/lib/prisma"
 import { getPostDataInclude } from "@/lib/types"
 import { createPostSchema } from "@/lib/zodSchema"
 
-interface Media {
-  publicId:string,
-  type:string
-}
+
 
 export async function SubmitPost(input: { content: string; media:{
   publicId:string,

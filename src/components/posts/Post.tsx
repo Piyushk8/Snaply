@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { PostData } from '@/lib/types'
-import { cn, formateRelativeDate } from '@/lib/utils'
+import { formateRelativeDate } from '@/lib/utils'
 import { useSession } from 'next-auth/react'
 import PostMoreButton from './PostMoreButton'
 import Linkify from '../Linkify'
@@ -12,7 +12,7 @@ import LikeButton from './LikeButton'
 import BookmarkButton from './BookmarkButton'
 import { CommentButton } from '../comments/CommentButton'
 import { useRouter } from 'next/navigation'
-import { MediaCarousel, MediaGrid } from '../comments/mediaCarousal'
+import {  MediaGrid } from '../comments/mediaCarousal'
 import { Share2 } from 'lucide-react'
 
 interface PostProps {

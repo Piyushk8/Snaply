@@ -3,11 +3,6 @@
 import { useSession } from "next-auth/react";
 import ClientCldImage from "@/components/CldImage";
 import { TextareaForm } from "./TextArea";
-import { useMediaUpload } from "./useMediaUpload";
-import { useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { ImageIcon } from "lucide-react";
-
 
 export default function PostEditor() {
   const { data: session } = useSession();

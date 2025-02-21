@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Download,
-  Loader2,
   X,
   ZoomIn,
   ZoomOut,
@@ -303,7 +302,7 @@ export const MediaGrid = ({ media }: { media: Media[] }) => {
     return (
       <div
         key={index}
-        className={`flex justify-center items-center relative overflow-hidden ${getMediaClass(index, media.length)}`}
+        className={`flex justify-center items-center relative overflow-hidden rounded-2xl ${getMediaClass(index, media.length)}`}
         onClick={() => setActiveMedia(item)}
       >
         {isVideo ? (
@@ -319,7 +318,7 @@ export const MediaGrid = ({ media }: { media: Media[] }) => {
               crop:"fill_pad"
             })}
             controls
-            className="bg-muted  rounded-2xl max-w-full max-h-full"
+            className="bg-muted max-w-full max-h-full"
           />
         ) : (
           <CldImage

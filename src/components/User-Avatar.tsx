@@ -1,6 +1,4 @@
 import Image from "next/image";
-
-import { AvatarIcon } from "@radix-ui/react-icons";
 import Avatar from "@/lib/businessman-character-avatar-isolated_24877-60111.jpg"
 interface UserAvatarProps{
     image:string| null |undefined

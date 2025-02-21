@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { getPostDataInclude, POstPage } from "@/lib/types";
-import { error } from "console";
 import { NextRequest } from "next/server";
 
 export const GET =  async (req:NextRequest) => {

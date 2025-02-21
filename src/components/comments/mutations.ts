@@ -9,7 +9,6 @@ import {
 import {  deleteComment, editComment, submitComment } from "./actions";
 import { toast, useToast } from "@/hooks/use-toast";
 import { CommentPage } from "@/lib/types";
-import { pages } from "next/dist/build/templates/app-page";
 
 export function useSubmitCommentMutation(postId: string) {
   const { toast } = useToast();

@@ -4,8 +4,6 @@ import { useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { OauthLogin } from "@/actions/OauthLogin";
-import { auth } from "@/auth";
-import { useSession } from "next-auth/react";
 import { PulsatingButton } from "@/components/ui/pulsating-button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {

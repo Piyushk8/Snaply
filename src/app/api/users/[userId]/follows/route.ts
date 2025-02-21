@@ -1,15 +1,9 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { FollowerInfo } from "@/lib/types";
-import { error } from "console";
-import { DefaultSession ,Session} from "next-auth";
+import {Session} from "next-auth";
 import { NextRequest } from "next/server";
-// interface Session extends DefaultSession {
-//     user: {
-//       id: string; // Add the id property here
-//       // Add any other properties you want to include
-//     } & DefaultSession["user"]; // Keep existing properties from DefaultSession
-//   }
+
 export const GET= async(req:NextRequest
     ,{params}:{params:{userId:string}}
 ) => {

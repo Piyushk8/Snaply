@@ -1,7 +1,6 @@
 "use client"
 import { PostData } from '@/lib/types'
 import React, { useState } from 'react'
-import { string } from 'zod'
 import DeletePostDialog from './DeletePostDialog'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'

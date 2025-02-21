@@ -1,6 +1,6 @@
 "use client"
 
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation,useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
 import { useSession } from 'next-auth/react'

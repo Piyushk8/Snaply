@@ -1,13 +1,10 @@
 "use client"
 
-import { CommentPage, PostData } from '@/lib/types'
+import { PostData } from '@/lib/types'
 import React from 'react'
 import Comment from './comment'
-import prisma from '@/lib/prisma'
-import CommentInput from './CommentInput'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { FaSmileBeam } from 'react-icons/fa'
 import { Skeleton } from '../ui/skeleton'
 import InfinityScrollContainer from '../infinityScrollContainer'
 import { Loader2 } from 'lucide-react'

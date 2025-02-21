@@ -1,7 +1,7 @@
 
 import Link from 'next/link'
 import React from 'react'
-import { auth, signOut } from '@/auth'
+import { auth } from '@/auth'
 import UserButton from './userButton'
 
 export default async function  Navbar() {

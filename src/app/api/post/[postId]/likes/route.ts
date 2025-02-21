@@ -1,9 +1,7 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { LikeInfo } from "@/lib/types";
-import { error } from "console";
-import { NextRequest, NextResponse } from "next/server";
-import { string } from "zod";
+import { NextRequest } from "next/server";
 
 export async  function GET(req:NextRequest ,
     {params}:{params:{postId:string}}) {

@@ -1,9 +1,9 @@
 import { useToast } from '@/hooks/use-toast'
-import { BookmarkInfo, LikeInfo } from '@/lib/types'
+import { BookmarkInfo} from '@/lib/types'
 import { cn } from '@/lib/utils'
-import { QueryKey, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { Bookmark, Heart } from 'lucide-react'
+import { Bookmark } from 'lucide-react'
 import React from 'react'
 interface BookmarkButtonProps{
     postId:string,

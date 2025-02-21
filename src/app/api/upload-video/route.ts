@@ -1,5 +1,4 @@
 import { auth } from '@/auth';
-import prisma from '@/lib/prisma';
 import { Buffer } from 'buffer';
 import { v2 as cloudinary } from 'cloudinary';
 import { NextRequest, NextResponse } from 'next/server';

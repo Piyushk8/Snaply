@@ -1,9 +1,7 @@
 "use client";
-import { getTrendingTopics } from "@/components/TrendsSidebar";
 import { formatNumber } from "@/lib/utils";
 import axios from "axios";
 import { Dot, Loader2 } from "lucide-react";
-import Link from "next/link";
 import React, { use, useEffect, useState } from "react";
 
 const TrendingsPage = () => {

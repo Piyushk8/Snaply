@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
-import { getPostDataInclude, getUserDataSelect, POstPage } from "@/lib/types";
+import { getUserDataSelect } from "@/lib/types";
 import { error } from "console";
 import { NextRequest } from "next/server";
 

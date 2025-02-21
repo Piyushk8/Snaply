@@ -5,7 +5,6 @@ import { Loader2 } from "lucide-react";
 import React from "react";
 import axios from "axios";
 import InfinityScrollContainer from "@/components/infinityScrollContainer";
-import { FaSmileBeam } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
