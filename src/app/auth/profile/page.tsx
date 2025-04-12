@@ -16,11 +16,9 @@ import { Label } from "@/components/ui/label";
 import AvatarPlaceholder from "@/lib/businessman-character-avatar-isolated_24877-60111.jpg";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2} from "lucide-react";
 import { AvatarInput } from "@/app/(protected)/user/[username]/EditProfileButton";
 import { uploadAvatar } from "@/lib/utility/utility";
-import { DotPattern } from "@/components/ui/dot-pattern";
-import { cn } from "@/lib/utils";
 
 export default function CompleteProfile() {
   const router = useRouter();
