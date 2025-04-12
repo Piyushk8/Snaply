@@ -23,6 +23,13 @@ export const POST = async (req: NextRequest) => {
     if (!session?.user) {
         return NextResponse.json({ error: "unauthorized" }, { status: 401 });
     }
+    console.log("user",user)
+    const userCheck = await prisma.user.findFirst({
+        where:{
+            email:user?.email
+        }
+    })
+    if(!userCheck) return NextResponse.json({error:"unauthorized"} , {status:401})
 
     try {
         const formData = await req.formData();
@@ -68,14 +75,16 @@ export const POST = async (req: NextRequest) => {
             );
             uploadStream.end(buffer);
         });
+        console.log(result)
 
-
+        const r = 
         await prisma.user.update({
             where:{id:user?.id},
             data:{
                 image:result?.public_id
             }
         })
+        console.log("up",r)
 
         return NextResponse.json({ publicId: result.public_id }, { status: 200 });
 
