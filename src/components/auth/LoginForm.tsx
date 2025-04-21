@@ -61,7 +61,7 @@ const LoginForm = () => {
                       <FormControl>
                         <Input 
                           {...field}
-                          placeholder='johndoe@xyz.com'
+                          placeholder='Ron@123.com'
                           type='email'
                           disabled={isPending}
                         />
@@ -80,7 +80,7 @@ const LoginForm = () => {
                       <FormControl>
                         <Input 
                           {...field}
-                          placeholder='Password'
+                          placeholder='1234567'
                           type='password'
                           disabled={isPending}
                         />

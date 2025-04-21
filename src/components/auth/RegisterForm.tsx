@@ -16,8 +16,10 @@ import { FormError } from '../form-error'
 import { FormSuccess } from '../form-Success'
 
 import { register } from '@/actions/register'
+import { useRouter } from 'next/navigation'
 
 export  const RegisterForm = () => {
+  const router = useRouter()
   const [error, setError] = useState<string | undefined>("")
   const [success, setSuccess] = useState<string | undefined>("")
   const [isPending , startTransition] = useTransition()
@@ -38,6 +40,9 @@ export  const RegisterForm = () => {
       register(values).then((data)=>{
         setError(data.error)
         setSuccess(data.success)
+         if (data.success) {
+          router.push("/auth/signin") // or "/" if you want
+        }
       })
      })
   }
