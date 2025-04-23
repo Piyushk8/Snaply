@@ -63,7 +63,7 @@ const MenuBar = async({className}:MenuBarProps) => {
                 title='Messages'
                 asChild
             >
-                <Link href={"/messages"}>
+                <Link href={"/home"}>
                 <Home />
                 <span className='hidden md:inline'>Messages</span>
                 </Link>

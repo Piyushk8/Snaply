@@ -27,10 +27,11 @@ interface UserProfileSectionProps {
 }
 
 const getUser = cache(async (username: string, loggedInUser: string) => {
+  const decodedUsername = decodeURIComponent(username);
   const user = await prisma.user.findFirst({
     where: {
       username: {
-        equals: username,
+        equals: decodedUsername,
         mode: 'insensitive',
       },
     },
@@ -91,8 +92,6 @@ function UserProfileSection({
       ({followerId}) => followerId === loggedInUserId
     ),
   };
-  
-  console.log("here",user)
   return (
     <div className="h-fit w-full space-y-5 rounded-2xl bg-card p-5 shadow-sm">
         <ClientCldImage alt='fallback' src={user?.image} size={250} height={250} width={250} />
