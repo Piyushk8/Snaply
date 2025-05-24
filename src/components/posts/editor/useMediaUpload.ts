@@ -25,7 +25,7 @@ export function useMediaUpload() {
       setallUploadComplete(true);
       return;
     }
-  }, [allUploadComplete,attachmentUploadInfo]);
+  }, [allUploadComplete, attachmentUploadInfo]);
 
   const uploadAttachments = async (files: File[]) => {
     // Create modified files with new names
